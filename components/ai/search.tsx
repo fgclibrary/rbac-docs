@@ -12,7 +12,7 @@ import {
   useState,
 } from 'react';
 import { Loader2, MessageCircleIcon, RefreshCw, SearchIcon, Send, X } from 'lucide-react';
-import { cn } from '../../lib/cn';
+import { cn } from '@/lib/utils';
 import { buttonVariants } from '../ui/button';
 import { useChat, type UseChatHelpers } from '@ai-sdk/react';
 import { DefaultChatTransport, type Tool, type UIToolInvocation } from 'ai';
