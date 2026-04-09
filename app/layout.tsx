@@ -11,11 +11,11 @@ const jetbrainsMono = JetBrains_Mono({
 export default function Layout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="en"
       className={cn(jetbrainsMono.variable)}
+      lang="en"
       suppressHydrationWarning
     >
-      <body className="flex flex-col min-h-screen">
+      <body className="flex min-h-screen flex-col">
         <RootProvider>{children}</RootProvider>
       </body>
     </html>
