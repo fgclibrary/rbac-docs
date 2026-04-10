@@ -27,6 +27,7 @@ next-env.d.ts
 
 # ide
 .idea
+.vscode
 
 # AI
 .claude
