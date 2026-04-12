@@ -10,7 +10,7 @@ function Table({
 }: React.TableHTMLAttributes<HTMLTableElement>) {
   return (
     <div className="overflow-auto">
-      <table className="w-full border-collapse text-sm" {...props}>
+      <table className="mt-0 w-full border-collapse text-sm" {...props}>
         {children}
       </table>
     </div>
