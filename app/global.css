@@ -34,6 +34,8 @@ html > body[data-scroll-locked] {
   --color-chart-1: var(--chart-1);
   --color-ring: var(--ring);
   --color-input: var(--input);
+  --color-table-border: var(--table-border);
+  --color-table-border-subtle: var(--table-border-subtle);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
   --color-accent-foreground: var(--accent-foreground);
@@ -76,6 +78,8 @@ html > body[data-scroll-locked] {
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
+  --table-border: #e0e0e5;
+  --table-border-subtle: #f0f0f5;
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.845 0.143 164.978);
@@ -111,6 +115,8 @@ html > body[data-scroll-locked] {
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
+  --table-border: oklch(1 0 0 / 12%);
+  --table-border-subtle: oklch(1 0 0 / 8%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
   --chart-1: oklch(0.845 0.143 164.978);

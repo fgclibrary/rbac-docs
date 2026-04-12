@@ -1,6 +1,6 @@
+import { RootProvider } from "fumadocs-ui/provider/next";
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
-import { RootProvider } from "fumadocs-ui/provider/next";
 import { cn } from "@/lib/utils";
 import "./global.css";
 

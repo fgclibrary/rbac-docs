@@ -21,11 +21,7 @@ function Thead({
   children,
   ...props
 }: React.HTMLAttributes<HTMLTableSectionElement>) {
-  return (
-    <thead className="border-[#E0E0E5] border-b" {...props}>
-      {children}
-    </thead>
-  );
+  return <thead {...props}>{children}</thead>;
 }
 
 function Th({
@@ -33,7 +29,10 @@ function Th({
   ...props
 }: React.ThHTMLAttributes<HTMLTableCellElement>) {
   return (
-    <th className="border-s-0 bg-transparent px-4 py-2.5 text-left font-semibold" {...props}>
+    <th
+      className="border-table-border border-s-0 border-b bg-transparent px-4 py-2.5 text-left font-semibold"
+      {...props}
+    >
       {children}
     </th>
   );
@@ -47,11 +46,7 @@ function Tbody({
 }
 
 function Tr({ children, ...props }: React.HTMLAttributes<HTMLTableRowElement>) {
-  return (
-    <tr className="border-[#F0F0F5] border-b" {...props}>
-      {children}
-    </tr>
-  );
+  return <tr {...props}>{children}</tr>;
 }
 
 function Td({
@@ -59,7 +54,10 @@ function Td({
   ...props
 }: React.TdHTMLAttributes<HTMLTableCellElement>) {
   return (
-    <td className="border-s-0 px-4 py-2.5" {...props}>
+    <td
+      className="border-table-border-subtle border-s-0 border-b px-4 py-2.5"
+      {...props}
+    >
       {children}
     </td>
   );
