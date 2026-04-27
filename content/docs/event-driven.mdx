@@ -86,7 +86,7 @@ import {SquareTerminal,SlidersHorizontal} from 'lucide-react'
 
 对于 `role-info` 组件，当删除角色（`dangerClick` 事件）成功后，需要调用 `loadDefaultData` 事件来刷新默认选中的角色。框架默认选取第一个角色 `administrator`（该角色为默认超级管理员角色，不允许删除）作为默认选中角色。
 
-需要注意的是，只有属性值发生变更时才会触发「属性值变更命令」进而加载数据。当连续删除多个角色时，默认值始终为 `administrator` 的唯一标识，属性值未发生变化，变更命令不会被触发。因此在设置默认值时，需要先用一个中间值 `reset` 过渡，再设置为 `administrator` 的唯一标识，通过两次赋值确保变更命令能够被触发。该逻辑维护在 `roleMembership` 页面的属性值变更命令中。
+请留意，只有**属性值发生变更时**才会触发「属性值变更命令」进而加载数据。当连续删除多个角色时，默认值将始终为 `administrator` 的唯一标识，导致变更命令不会被触发。因此在设置默认值时，需要使用关键字 `reset` 与 `administrator` 的唯一标识进行反复赋值，确保变更命令每次均能够被触发。该逻辑维护在 `roleMembership` 页面的「属性值变更命令」中。
 
 
 ```formula title="loadDefaultData"
