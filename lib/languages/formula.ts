@@ -46,8 +46,7 @@ const formula = {
     },
     // 单元格区域引用：A1:B2, $A$1:$B$2
     {
-      match:
-        "\\$?[A-Z]+\\$?\\d+:\\$?[A-Z]+\\$?\\d+",
+      match: "\\$?[A-Z]+\\$?\\d+:\\$?[A-Z]+\\$?\\d+",
       name: "variable.other.formula",
     },
     // 单个单元格引用：A1, $A$1, A$1, $A1

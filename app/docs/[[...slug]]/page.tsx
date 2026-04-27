@@ -9,6 +9,7 @@ import {
 import { createRelativeLink } from "fumadocs-ui/mdx";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { APIPage } from "@/components/api-page";
 import { getMDXComponents } from "@/components/mdx";
 import { gitConfig } from "@/lib/shared";
 import { getPageImage, getPageMarkdownUrl, source } from "@/lib/source";
@@ -18,6 +19,18 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
   const page = source.getPage(params.slug);
   if (!page) {
     notFound();
+  }
+
+  // OpenAPI 页面：使用 APIPage 组件渲染
+  if (page.type === "openapi") {
+    return (
+      <DocsPage full>
+        <h1 className="font-semibold text-[1.75em]">{page.data.title}</h1>
+        <DocsBody>
+          <APIPage {...page.data.getAPIPageProps()} />
+        </DocsBody>
+      </DocsPage>
+    );
   }
 
   const MDX = page.data.body;
@@ -39,7 +52,6 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
       <DocsBody>
         <MDX
           components={getMDXComponents({
-            // this allows you to link to other pages with relative file paths
             a: createRelativeLink(source, page),
           })}
         />

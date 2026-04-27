@@ -1,0 +1,414 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "RBAC API",
+    "version": "1.0.0",
+    "description": "一套统一可对外的 AI 友好用户权限管理接口。"
+  },
+  "servers": [{ "url": "https://your-domain.com" }],
+  "tags": [
+    { "name": "用户", "description": "用户管理相关接口" },
+    { "name": "角色", "description": "角色管理相关接口" },
+    { "name": "权限", "description": "权限查询相关接口" }
+  ],
+  "paths": {
+    "/api/users": {
+      "get": {
+        "tags": ["用户"],
+        "operationId": "listUsers",
+        "summary": "获取用户列表",
+        "description": "分页查询系统中的用户列表，支持按用户名和状态筛选。",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 1, "minimum": 1 },
+            "description": "页码"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "minimum": 1,
+              "maximum": 100
+            },
+            "description": "每页数量"
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "按用户名搜索的关键词"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": { "$ref": "#/components/schemas/UserStatus" },
+            "description": "按用户状态筛选"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回用户列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total": { "type": "integer", "description": "总数" },
+                    "list": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/User" }
+                    }
+                  },
+                  "required": ["total", "list"]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["用户"],
+        "operationId": "createUser",
+        "summary": "创建用户",
+        "description": "创建一个新用户。",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateUserRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "用户创建成功",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/User" }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数错误"
+          }
+        }
+      }
+    },
+    "/api/users/{userId}": {
+      "get": {
+        "tags": ["用户"],
+        "operationId": "getUser",
+        "summary": "获取用户详情",
+        "description": "根据用户 ID 获取用户的详细信息。",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "用户 ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回用户详情",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/User" }
+              }
+            }
+          },
+          "404": {
+            "description": "用户不存在"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["用户"],
+        "operationId": "deleteUser",
+        "summary": "删除用户",
+        "description": "根据用户 ID 删除用户。",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "用户 ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "用户删除成功"
+          },
+          "404": {
+            "description": "用户不存在"
+          }
+        }
+      }
+    },
+    "/api/roles": {
+      "get": {
+        "tags": ["角色"],
+        "operationId": "listRoles",
+        "summary": "获取角色列表",
+        "description": "分页查询系统中的角色列表。",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 1, "minimum": 1 },
+            "description": "页码"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "minimum": 1,
+              "maximum": 100
+            },
+            "description": "每页数量"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回角色列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total": { "type": "integer", "description": "总数" },
+                    "list": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Role" }
+                    }
+                  },
+                  "required": ["total", "list"]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["角色"],
+        "operationId": "createRole",
+        "summary": "创建角色",
+        "description": "创建一个新角色。",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateRoleRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "角色创建成功",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Role" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/roles/{roleId}/permissions": {
+      "get": {
+        "tags": ["权限"],
+        "operationId": "getRolePermissions",
+        "summary": "获取角色权限",
+        "description": "查询指定角色拥有的所有权限列表。",
+        "parameters": [
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "角色 ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回权限列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Permission" }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "角色不存在"
+          }
+        }
+      },
+      "put": {
+        "tags": ["权限"],
+        "operationId": "updateRolePermissions",
+        "summary": "更新角色权限",
+        "description": "批量更新指定角色的权限，覆盖原有权限列表。",
+        "parameters": [
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "角色 ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "permissionIds": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "description": "权限 ID 列表"
+                  }
+                },
+                "required": ["permissionIds"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "权限更新成功"
+          },
+          "404": {
+            "description": "角色不存在"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserStatus": {
+        "type": "string",
+        "enum": ["active", "inactive", "locked"],
+        "description": "用户状态"
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "用户 ID" },
+          "username": { "type": "string", "description": "用户名" },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "邮箱地址"
+          },
+          "status": { "$ref": "#/components/schemas/UserStatus" },
+          "roles": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Role" },
+            "description": "用户拥有的角色列表"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "创建时间"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "更新时间"
+          }
+        },
+        "required": ["id", "username", "status"]
+      },
+      "CreateUserRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "用户名",
+            "minLength": 2,
+            "maxLength": 50
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "邮箱地址"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "description": "初始密码",
+            "minLength": 8
+          },
+          "roleIds": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "初始角色 ID 列表"
+          }
+        },
+        "required": ["username", "password"]
+      },
+      "Role": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "角色 ID" },
+          "name": { "type": "string", "description": "角色名称" },
+          "description": { "type": "string", "description": "角色描述" },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "创建时间"
+          }
+        },
+        "required": ["id", "name"]
+      },
+      "CreateRoleRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "角色名称",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "description": { "type": "string", "description": "角色描述" }
+        },
+        "required": ["name"]
+      },
+      "Permission": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "权限 ID" },
+          "name": { "type": "string", "description": "权限名称" },
+          "resource": { "type": "string", "description": "资源标识" },
+          "action": {
+            "type": "string",
+            "enum": ["read", "write", "delete", "manage"],
+            "description": "操作类型"
+          },
+          "description": { "type": "string", "description": "权限描述" }
+        },
+        "required": ["id", "name", "resource", "action"]
+      }
+    }
+  }
+}
