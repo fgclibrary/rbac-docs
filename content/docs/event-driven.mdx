@@ -89,7 +89,7 @@ import {SquareTerminal,SlidersHorizontal} from 'lucide-react'
 需要注意的是，只有属性值发生变更时才会触发「属性值变更命令」进而加载数据。当连续删除多个角色时，默认值始终为 `administrator` 的唯一标识，属性值未发生变化，变更命令不会被触发。因此在设置默认值时，需要先用一个中间值 `reset` 过渡，再设置为 `administrator` 的唯一标识，通过两次赋值确保变更命令能够被触发。该逻辑维护在 `roleMembership` 页面的属性值变更命令中。
 
 
-```text title="loadDefaultData - 设置 roleMembership 的属性"
+```formula title="loadDefaultData"
 =IF(isSet="reset",defaultRoleData.uniqueKey,"reset")
 ```
 
