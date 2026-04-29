@@ -8,15 +8,22 @@ import {
 } from "fumadocs-ui/layouts/docs/page";
 import { createRelativeLink } from "fumadocs-ui/mdx";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { APIPage } from "@/components/api-page";
 import { getMDXComponents } from "@/components/mdx";
-import { gitConfig } from "@/lib/shared";
+import { docsRoute, gitConfig } from "@/lib/shared";
 import { getPageImage, getPageMarkdownUrl, source } from "@/lib/source";
 
 export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
   const params = await props.params;
-  const page = source.getPage(params.slug);
+  const slug = params.slug;
+
+  // 无 slug 时重定向到文档首页
+  if (!slug || slug.length === 0) {
+    redirect(`${docsRoute}/guide`);
+  }
+
+  const page = source.getPage(slug);
   if (!page) {
     notFound();
   }
@@ -68,7 +75,13 @@ export async function generateMetadata(
   props: PageProps<"/docs/[[...slug]]">
 ): Promise<Metadata> {
   const params = await props.params;
-  const page = source.getPage(params.slug);
+  const slug = params.slug;
+
+  if (!slug || slug.length === 0) {
+    return {};
+  }
+
+  const page = source.getPage(slug);
   if (!page) {
     notFound();
   }

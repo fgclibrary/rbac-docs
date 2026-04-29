@@ -1,0 +1,7 @@
+{
+  "title": "API",
+  "root": true,
+  "icon": "Braces",
+  "description": "服务端命令接口文档",
+  "pages": ["index", "...(generated)"]
+}

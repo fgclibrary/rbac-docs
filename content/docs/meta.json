@@ -1,15 +1,3 @@
 {
-  "pages": [
-    "index",
-    "quick-start",
-    "---数据---",
-    "views",
-    "auxiliary-table",
-    "---设计---",
-    "standard",
-    "event-driven",
-    "access-control-models",
-    "---API---",
-    "api"
-  ]
+  "pages": ["guide", "api"]
 }
