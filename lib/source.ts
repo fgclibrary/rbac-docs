@@ -5,14 +5,15 @@ import { openapiPlugin, openapiSource } from "fumadocs-openapi/server";
 import { openapi } from "./openapi";
 import { docsContentRoute, docsImageRoute, docsRoute } from "./shared";
 
-// OpenAPI 页面在侧边栏中的目录前缀
-const openapiBaseDir = "api";
-
 export const source = loader(
   {
     docs: docs.toFumadocsSource(),
     openapi: await openapiSource(openapi, {
-      baseDir: openapiBaseDir,
+      baseDir: "api/(generated)",
+      meta: {
+        folderStyle: "folder",
+      },
+      groupBy: "tag",
     }),
   },
   {
