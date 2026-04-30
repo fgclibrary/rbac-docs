@@ -8,5 +8,38 @@ index: true
 
 - **用户管理** — 用户列表查询、用户详情获取、用户创建与删除
 - **角色管理** — 角色列表查询、角色创建
+- **组织管理** — 组织列表查询、组织创建
 - **权限管理** — 角色权限查询与更新
+- **元数据管理** — 元数据查询与更新
 
+import { HomeIcon } from 'lucide-react';
+import { APICard } from '@/components/api-card';
+
+<Cards>
+  <Card
+    href="https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating"
+    title="Fetching, Caching, and Revalidating"
+  >
+    Learn more about caching in Next.js
+  </Card>
+  <Card title="href is optional">Learn more about `fetch` in Next.js.</Card>
+  <APICard 
+  href="/docs/api/users/listUsers" 
+  title="获取用户列表" 
+  description="获取所有用户信息" 
+  method="GET" 
+/>
+<APICard 
+  href="/docs/api/users" 
+  title="创建用户" 
+  description="创建新用户账户" 
+  method="POST" 
+/>
+
+<APICard 
+  href="/docs/webhooks/order" 
+  title="订单通知" 
+  description="订单状态变更时触发" 
+  webhook 
+/>
+</Cards>

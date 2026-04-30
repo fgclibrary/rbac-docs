@@ -1,6 +1,7 @@
 import { remarkSteps } from "fumadocs-core/mdx-plugins/remark-steps";
 import { metaSchema, pageSchema } from "fumadocs-core/source/schema";
 import { defineConfig, defineDocs } from "fumadocs-mdx/config";
+import z from "zod";
 import formula from "./lib/languages/formula";
 
 // You can customise Zod schemas for frontmatter and `meta.json` here
@@ -8,7 +9,10 @@ import formula from "./lib/languages/formula";
 export const docs = defineDocs({
   dir: "content/docs",
   docs: {
-    schema: pageSchema,
+    schema: pageSchema.extend({
+      preview: z.string().optional(),
+      index: z.boolean().default(false),
+    }),
     postprocess: {
       includeProcessedMarkdown: true,
     },
