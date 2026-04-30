@@ -1,0 +1,108 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "默认模块",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "servers": [{ "url": "https://hzg.orb.local" }],
+  "tags": [
+    {
+      "name": "auth"
+    }
+  ],
+  "paths": {
+    "/UserService/connect/token": {
+      "post": {
+        "summary": "获取访问令牌",
+        "deprecated": false,
+        "description": "通过凭证式（Client Credentials）方式获取活字格第三方授权的访问令牌。",
+        "tags": ["auth"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "client_id": {
+                    "description": "客户端标识符，在活字格服务器管理控制台中获取",
+                    "type": "string"
+                  },
+                  "client_secret": {
+                    "description": "客户端密钥，在活字格服务器管理控制台中获取",
+                    "type": "string"
+                  },
+                  "scope": {
+                    "description": "API 作用域，可不传",
+                    "example": "",
+                    "type": "string"
+                  },
+                  "grant_type": {
+                    "description": "授权方式，这里填写固定值。",
+                    "example": "client_credentials",
+                    "type": "string"
+                  }
+                },
+                "required": ["client_id", "client_secret", "grant_type"]
+              },
+              "examples": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string",
+                      "title": "访问令牌"
+                    },
+                    "expires_in": {
+                      "type": "integer",
+                      "title": "令牌生命周期",
+                      "description": "单位秒"
+                    },
+                    "token_type": {
+                      "type": "string",
+                      "title": "令牌类型"
+                    },
+                    "scope": {
+                      "type": "string",
+                      "title": "令牌作用域"
+                    }
+                  },
+                  "required": [
+                    "expires_in",
+                    "token_type",
+                    "scope",
+                    "access_token"
+                  ]
+                },
+                "example": {
+                  "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6I...",
+                  "expires_in": 7200,
+                  "token_type": "Bearer",
+                  "scope": "FGC_AllAppsServerCommands FGC_UserAPIs"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "webhooks": {},
+  "components": {
+    "schemas": {},
+    "responses": {},
+    "securitySchemes": {}
+  },
+  "security": []
+}

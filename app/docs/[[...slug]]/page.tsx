@@ -29,7 +29,7 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
   }
 
   // OpenAPI 页面：使用 APIPage 组件渲染
-  if (page.type === "openapi") {
+  if (page.type === "openapi" || page.type === "auth-api") {
     return (
       <DocsPage full>
         <h1 className="font-semibold text-[1.75em]">{page.data.title}</h1>
