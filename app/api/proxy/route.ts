@@ -1,8 +1,11 @@
 import { openapi } from "@/lib/openapi";
 
-const proxy = openapi.createProxy({
-  allowedOrigins: ["https://hzg.orb.local"],
-});
+// 从环境变量读取允许的来源，多个域名以逗号分隔
+const allowedOrigins = process.env.PROXY_ALLOWED_ORIGINS?.split(",")
+  .map((s) => s.trim())
+  .filter(Boolean) ?? ["https://your-forguncy-domain.com"];
+
+const proxy = openapi.createProxy({ allowedOrigins });
 
 // 包装代理处理函数，移除导致解码失败的响应头
 async function handle(request: Request): Promise<Response> {
