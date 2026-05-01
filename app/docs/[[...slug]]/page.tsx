@@ -9,7 +9,7 @@ import {
 import { createRelativeLink } from "fumadocs-ui/mdx";
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
-import { APIPage } from "@/components/api-page";
+import { APIPage, AuthAPIPage } from "@/components/api-page";
 import { getMDXComponents } from "@/components/mdx";
 import { docsRoute, gitConfig } from "@/lib/shared";
 import { getPageImage, getPageMarkdownUrl, source } from "@/lib/source";
@@ -30,11 +30,12 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
 
   // OpenAPI 页面：使用 APIPage 组件渲染
   if (page.type === "openapi" || page.type === "auth-api") {
+    const PageComponent = page.type === "auth-api" ? AuthAPIPage : APIPage;
     return (
       <DocsPage full>
         <h1 className="font-semibold text-[1.75em]">{page.data.title}</h1>
         <DocsBody>
-          <APIPage {...page.data.getAPIPageProps()} />
+          <PageComponent {...page.data.getAPIPageProps()} />
         </DocsBody>
       </DocsPage>
     );
