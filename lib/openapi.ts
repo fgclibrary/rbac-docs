@@ -7,24 +7,23 @@ import openapiDoc from "../openapi.json";
 const apiServerUrl = process.env.OPENAPI_SERVER_URL;
 const authServerUrl = process.env.AUTH_SERVER_URL;
 
-function resolveServers(
-	doc: Document,
-	serverUrl?: string,
-): Document {
-	if (!serverUrl) return doc;
-	return { ...doc, servers: [{ url: serverUrl }] };
+function resolveServers(doc: Document, serverUrl?: string): Document {
+  if (!serverUrl) {
+    return doc;
+  }
+  return { ...doc, servers: [{ url: serverUrl }] };
 }
 
 export const openapi = createOpenAPI({
-	input: () => ({
-		default: resolveServers(openapiDoc as Document, apiServerUrl),
-	}),
-	proxyUrl: "/api/proxy",
+  input: () => ({
+    default: resolveServers(openapiDoc as Document, apiServerUrl),
+  }),
+  proxyUrl: "/api/proxy",
 });
 
 export const tokenEndpoint = createOpenAPI({
-	input: () => ({
-		default: resolveServers(authOpenapiDoc as Document, authServerUrl),
-	}),
-	proxyUrl: "/api/proxy",
+  input: () => ({
+    default: resolveServers(authOpenapiDoc as Document, authServerUrl),
+  }),
+  proxyUrl: "/api/proxy",
 });

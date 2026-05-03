@@ -15,6 +15,9 @@ export function HomeCTA() {
   const router = useRouter();
   const [pendingRedirect, setPendingRedirect] = useState<string | null>(null);
 
+  // 从 URL 读取 middleware 传递的重定向目标
+  const redirectFromUrl = searchParams.get("redirect");
+
   // 从 middleware 重定向回来时自动弹出登录窗口
   useEffect(() => {
     if (searchParams.get("showLogin") === "true" && isLoaded && !isSignedIn) {
@@ -24,11 +27,18 @@ export function HomeCTA() {
 
   // 登录成功后自动跳转到目标页面
   useEffect(() => {
-    if (isSignedIn && pendingRedirect) {
-      setPendingRedirect(null);
-      router.push(pendingRedirect);
+    if (!isSignedIn) {
+      return;
     }
-  }, [isSignedIn, pendingRedirect, router]);
+    const target = pendingRedirect || redirectFromUrl;
+    if (target) {
+      setPendingRedirect(null);
+      router.push(target);
+    } else if (searchParams.get("showLogin") === "true") {
+      // 无重定向目标时，清理 URL 参数
+      router.replace("/");
+    }
+  }, [isSignedIn, pendingRedirect, redirectFromUrl, router, searchParams]);
 
   const handleProtectedClick = (e: React.MouseEvent, href: string) => {
     if (isLoaded && !isSignedIn) {

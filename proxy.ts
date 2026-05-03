@@ -28,6 +28,7 @@ export default clerkMiddleware(async (auth, request) => {
     if (!userId) {
       const url = new URL("/", request.url);
       url.searchParams.set("showLogin", "true");
+      url.searchParams.set("redirect", request.nextUrl.pathname);
       return NextResponse.redirect(url);
     }
   }

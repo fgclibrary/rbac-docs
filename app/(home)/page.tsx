@@ -1,7 +1,7 @@
 import { Boxes, Eye, Layers, Plug, Zap } from "lucide-react";
 import { Suspense } from "react";
-import { appName } from "@/lib/shared";
 import { HomeCTA } from "@/components/home-cta";
+import { appName } from "@/lib/shared";
 
 // 框架特性列表
 const features = [
