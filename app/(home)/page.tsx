@@ -33,7 +33,7 @@ const features = [
 
 export default function HomePage() {
   return (
-    <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-screen-xl flex-col items-center justify-center px-6 py-24 lg:flex-row lg:gap-24">
+    <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-7xl flex-col items-center justify-center px-6 py-24 lg:flex-row lg:gap-24">
       {/* 左侧：Banner 信息，占约 55% */}
       <section className="flex flex-col text-left lg:basis-[55%]">
         <h1 className="font-bold text-4xl leading-tight tracking-tight sm:text-5xl">

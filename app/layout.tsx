@@ -1,3 +1,4 @@
+import { zhCN } from "@clerk/localizations";
 import { ClerkProvider } from "@clerk/nextjs";
 import { RootProvider } from "fumadocs-ui/provider/next";
 import type { Metadata } from "next";
@@ -23,7 +24,7 @@ export default function Layout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <body className="flex min-h-screen flex-col">
-        <ClerkProvider>
+        <ClerkProvider localization={zhCN}>
           <RootProvider
             i18n={{
               translations: {
