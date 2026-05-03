@@ -6,6 +6,7 @@ import {
   AISearchPanel,
   AISearchTrigger,
 } from "@/components/ai/search";
+import { ThemeSwitchWithAuth } from "@/components/theme-switch-with-auth";
 import { baseOptions } from "@/lib/layout.shared";
 import { source } from "@/lib/source";
 import { cn } from "@/lib/utils";
@@ -15,6 +16,9 @@ export default function Layout({ children }: LayoutProps<"/docs">) {
     <DocsLayout
       tree={source.getPageTree()}
       {...baseOptions()}
+      slots={{
+        themeSwitch: ThemeSwitchWithAuth,
+      }}
       tabs={{
         transform(option, node) {
           const meta = source.getNodeMeta(node);

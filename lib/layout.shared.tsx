@@ -5,13 +5,12 @@ import { appName } from "./shared";
 export function baseOptions(): BaseLayoutProps {
   return {
     nav: {
-      // JSX supported
       title: appName,
     },
     links: [
       {
         type: "icon",
-        label: "葡萄城学堂", // `aria-label`
+        label: "葡萄城学堂",
         icon: <BookOpenText />,
         text: "葡萄城学堂",
         url: "https://learn.grapecity.com.cn/home",
