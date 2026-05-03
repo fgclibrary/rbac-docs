@@ -2,39 +2,33 @@
 title: 概览
 description: 权限管理框架的服务端命令文档。
 index: true
+icon: Info
 ---
 
-本节包含权限管理框架所有对外 API 的详细说明。接口基于 OpenAPI 3.1 规范定义，支持以下功能：
+本节包含权限管理框架所有对外 API 的详细说明。接口通过「服务端命令」提供对外服务，接口定义基于 OpenAPI 3.1 规范，包含以下功能模块：
 
 - **用户管理** — 用户列表查询、用户详情获取、用户创建与删除
 - **角色管理** — 角色列表查询、角色创建
 - **组织管理** — 组织列表查询、组织创建
-- **权限管理** — 角色权限查询与更新
-- **元数据管理** — 元数据查询与更新
+
+## 用户管理
 
 import { HomeIcon } from 'lucide-react';
 import { APICard } from '@/components/api-card';
 
 <Cards>
-  <Card
-    href="https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating"
-    title="Fetching, Caching, and Revalidating"
-  >
-    Learn more about caching in Next.js
-  </Card>
-  <Card title="href is optional">Learn more about `fetch` in Next.js.</Card>
   <APICard 
-  href="/docs/api/users/listUsers" 
-  title="获取用户列表" 
-  description="获取所有用户信息" 
-  method="GET" 
-/>
-<APICard 
-  href="/docs/api/users" 
-  title="创建用户" 
-  description="创建新用户账户" 
-  method="POST" 
-/>
+    href="/docs/api/account/getaccountlist/get" 
+    title="获取用户列表" 
+    description="获取活字格服务的账户列表，支持分页" 
+    method="GET" 
+  />
+  <APICard 
+    href="/docs/api/account/AddAccount" 
+    title="新增账户" 
+    description="新增新账户" 
+    method="POST" 
+  />
 
 <APICard 
   href="/docs/webhooks/order" 

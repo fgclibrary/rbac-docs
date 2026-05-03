@@ -1,418 +1,2489 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "RBAC API",
-    "version": "1.0.0",
-    "description": "一套统一可对外的 AI 友好用户权限管理接口。"
+    "title": "FGC-RBAC",
+    "description": "FGC-RBAC 服务端命令文档",
+    "version": "1.0.0"
   },
-  "servers": [{ "url": "https://your-domain.com" }],
   "tags": [
     {
-      "name": "Users",
-      "x-displayName": "认证管理",
-      "description": "User management related APIs"
+      "name": "account"
     },
-    { "name": "Roles", "description": "Role management related APIs" },
-    { "name": "Permissions", "description": "Permission query related APIs" }
+    {
+      "name": "role"
+    },
+    {
+      "name": "org"
+    }
   ],
   "paths": {
-    "/users": {
+    "/GetAccountList": {
       "get": {
-        "tags": ["Users"],
-        "operationId": "listUsers",
-        "summary": "获取用户列表",
-        "description": "分页查询系统中的用户列表，支持按用户名和状态筛选。",
+        "summary": "获取账户列表",
+        "deprecated": false,
+        "description": "获取活字格服务的账户列表，支持分页",
+        "tags": ["account"],
         "parameters": [
           {
             "name": "page",
             "in": "query",
-            "required": false,
-            "schema": { "type": "integer", "default": 1, "minimum": 1 },
-            "description": "页码"
+            "description": "第几页",
+            "required": true,
+            "example": 1,
+            "schema": {
+              "type": "integer"
+            }
           },
           {
             "name": "pageSize",
             "in": "query",
-            "required": false,
+            "description": "每页加载的数据量",
+            "required": true,
+            "example": 5,
             "schema": {
-              "type": "integer",
-              "default": 20,
-              "minimum": 1,
-              "maximum": 100
-            },
-            "description": "每页数量"
-          },
-          {
-            "name": "keyword",
-            "in": "query",
-            "required": false,
-            "schema": { "type": "string" },
-            "description": "按用户名搜索的关键词"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "required": false,
-            "schema": { "$ref": "#/components/schemas/UserStatus" },
-            "description": "按用户状态筛选"
+              "type": "integer"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "成功返回用户列表",
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "total": { "type": "integer", "description": "总数" },
-                    "list": {
+                    "ErrCode": {
+                      "type": "integer",
+                      "title": "返回码"
+                    },
+                    "Message": {
+                      "type": "string",
+                      "title": "返回信息"
+                    },
+                    "total": {
+                      "type": "integer",
+                      "title": "数据总条数"
+                    },
+                    "data": {
                       "type": "array",
-                      "items": { "$ref": "#/components/schemas/User" }
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "username": {
+                            "type": "string",
+                            "title": "用户名"
+                          },
+                          "fullName": {
+                            "type": "string",
+                            "title": "全名"
+                          },
+                          "email": {
+                            "type": "string",
+                            "title": "邮箱"
+                          },
+                          "isActived": {
+                            "type": "string",
+                            "title": "有效性"
+                          },
+                          "roles": {
+                            "type": "string",
+                            "title": "角色",
+                            "description": "多个用\",\"分隔"
+                          },
+                          "orgSuperior": {
+                            "type": "string",
+                            "title": "组织上级",
+                            "description": "上级层级从左往右由高到低，每级用\"||\"包裹"
+                          }
+                        },
+                        "required": [
+                          "username",
+                          "fullName",
+                          "email",
+                          "isActived",
+                          "roles",
+                          "orgSuperior"
+                        ]
+                      }
                     }
                   },
-                  "required": ["total", "list"]
+                  "required": ["ErrCode", "Message", "total", "data"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "获取成功",
+                  "total": 37,
+                  "data": [
+                    {
+                      "username": "admin",
+                      "fullName": "总管理员",
+                      "email": "admin@demo.com",
+                      "isActived": "有效",
+                      "roles": "",
+                      "orgSuperior": "||"
+                    },
+                    {
+                      "username": "Administrator",
+                      "fullName": "Administrator",
+                      "email": "example@example.com",
+                      "isActived": "有效",
+                      "roles": "Administrator",
+                      "orgSuperior": "||"
+                    },
+                    {
+                      "username": "chenshi",
+                      "fullName": "陈式",
+                      "email": "chenshi@shuhan.com",
+                      "isActived": "有效",
+                      "roles": "普通员工",
+                      "orgSuperior": "|liubei|guanyu|zhugeliang|weiyan|"
+                    },
+                    {
+                      "username": "dengzhi",
+                      "fullName": "邓芝",
+                      "email": "dengzhi@shuhan.com",
+                      "isActived": "有效",
+                      "roles": "普通员工",
+                      "orgSuperior": "|liubei|guanyu|fengchu|"
+                    },
+                    {
+                      "username": "dongyun",
+                      "fullName": "董允",
+                      "email": "dongyun@shuhan.com",
+                      "isActived": "有效",
+                      "roles": "普通员工",
+                      "orgSuperior": "|liubei|guanyu|pangtong|"
+                    }
+                  ]
                 }
               }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": ["Users"],
-        "operationId": "createUser",
-        "summary": "创建用户",
-        "description": "创建一个新用户。",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/CreateUserRequest" }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "用户创建成功",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/User" }
-              }
-            }
-          },
-          "400": {
-            "description": "请求参数错误"
-          }
-        }
-      }
-    },
-    "/api/users/{userId}": {
-      "get": {
-        "tags": ["Users"],
-        "operationId": "getUser",
-        "summary": "获取用户详情",
-        "description": "根据用户 ID 获取用户的详细信息。",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string" },
-            "description": "用户 ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "成功返回用户详情",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/User" }
-              }
-            }
-          },
-          "404": {
-            "description": "用户不存在"
-          }
-        }
-      },
-      "delete": {
-        "tags": ["Users"],
-        "operationId": "deleteUser",
-        "summary": "删除用户",
-        "description": "根据用户 ID 删除用户。",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string" },
-            "description": "用户 ID"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "用户删除成功"
-          },
-          "404": {
-            "description": "用户不存在"
-          }
-        }
-      }
-    },
-    "/api/roles": {
-      "get": {
-        "tags": ["Roles"],
-        "operationId": "listRoles",
-        "summary": "获取角色列表",
-        "description": "分页查询系统中的角色列表。",
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "required": false,
-            "schema": { "type": "integer", "default": 1, "minimum": 1 },
-            "description": "页码"
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 20,
-              "minimum": 1,
-              "maximum": 100
             },
-            "description": "每页数量"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "成功返回角色列表",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "total": { "type": "integer", "description": "总数" },
-                    "list": {
-                      "type": "array",
-                      "items": { "$ref": "#/components/schemas/Role" }
-                    }
-                  },
-                  "required": ["total", "list"]
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": ["Roles"],
-        "operationId": "createRole",
-        "summary": "创建角色",
-        "description": "创建一个新角色。",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/CreateRoleRequest" }
-            }
+            "headers": {}
           }
         },
-        "responses": {
-          "201": {
-            "description": "角色创建成功",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Role" }
-              }
-            }
+        "security": [
+          {
+            "bearer": []
           }
-        }
+        ]
       }
     },
-    "/api/roles/{roleId}/permissions": {
-      "get": {
-        "tags": ["Permissions"],
-        "operationId": "getRolePermissions",
-        "summary": "获取角色权限",
-        "description": "查询指定角色拥有的所有权限列表。",
-        "parameters": [
-          {
-            "name": "roleId",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string" },
-            "description": "角色 ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "成功返回权限列表",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": { "$ref": "#/components/schemas/Permission" }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "角色不存在"
-          }
-        }
-      },
-      "put": {
-        "tags": ["Permissions"],
-        "operationId": "updateRolePermissions",
-        "summary": "更新角色权限",
-        "description": "批量更新指定角色的权限，覆盖原有权限列表。",
-        "parameters": [
-          {
-            "name": "roleId",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string" },
-            "description": "角色 ID"
-          }
-        ],
+    "/AddAccount": {
+      "post": {
+        "summary": "新增账户",
+        "deprecated": false,
+        "description": "为活字格服务添加一个新的账户",
+        "operationId": "AddAccount",
+        "tags": ["account"],
+        "parameters": [],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "permissionIds": {
-                    "type": "array",
-                    "items": { "type": "string" },
-                    "description": "权限 ID 列表"
+                  "username": {
+                    "type": "string",
+                    "title": "用户名"
+                  },
+                  "fullName": {
+                    "type": ["string", "null"],
+                    "title": "全名"
+                  },
+                  "email": {
+                    "type": "string",
+                    "title": "邮箱"
+                  },
+                  "password": {
+                    "type": "string",
+                    "title": "密码"
+                  },
+                  "isActived": {
+                    "type": "integer",
+                    "enum": [1, 0],
+                    "title": "有效性"
+                  },
+                  "orgIds": {
+                    "type": "string",
+                    "description": "支持传入多个，用\",\"分隔",
+                    "title": "所属组织节点 ID"
                   }
                 },
-                "required": ["permissionIds"]
+                "required": ["username", "email", "password", "isActived"],
+                "additionalProperties": false
+              },
+              "example": {
+                "username": "test",
+                "fullName": " 测试用户",
+                "email": "test@demo.com",
+                "password": "123456",
+                "isActived": 0
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
-            "description": "权限更新成功"
-          },
-          "404": {
-            "description": "角色不存在"
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "description": "返回账户信息",
+                      "$ref": "#/components/schemas/account-resp"
+                    }
+                  },
+                  "required": ["ErrCode", "Message", "data"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "添加成功",
+                  "data": {
+                    "username": "test",
+                    "fullName": " 测试用户",
+                    "email": "test@demo.com",
+                    "isActived": 0,
+                    "roles": "",
+                    "orgSuperior": "||"
+                  }
+                }
+              }
+            },
+            "headers": {}
           }
-        }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/EditAccount": {
+      "post": {
+        "summary": "编辑账户",
+        "deprecated": false,
+        "description": "编辑活字格用户信息",
+        "operationId": "EditAccount",
+        "tags": ["account"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "title": "用户名"
+                  },
+                  "fullName": {
+                    "type": ["string", "null"],
+                    "title": "全名"
+                  },
+                  "email": {
+                    "type": "string",
+                    "title": "邮箱"
+                  },
+                  "isActived": {
+                    "type": "integer",
+                    "title": "有效性",
+                    "description": "1 有效，0 无效"
+                  },
+                  "orgIds": {
+                    "type": "string",
+                    "description": "支持传入多个，用\",\"分隔",
+                    "title": "所属组织节点 ID"
+                  }
+                },
+                "required": ["username", "email", "isActived"],
+                "additionalProperties": false
+              },
+              "example": {
+                "username": "test",
+                "fullName": "测试用户11",
+                "email": "test@demo.com",
+                "isActived": 1
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/account-resp"
+                    }
+                  },
+                  "required": ["ErrCode", "Message", "data"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "修改成功",
+                  "data": {
+                    "username": "test",
+                    "fullName": " 测试用户",
+                    "email": "test@demo.com",
+                    "isActived": 1,
+                    "roles": "",
+                    "orgSuperior": "||"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/DeleteAccount": {
+      "post": {
+        "summary": "删除账户",
+        "deprecated": false,
+        "description": "删除账户，支持批量删除",
+        "operationId": "DeleteAccount",
+        "tags": ["account"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "支持批量删除，用\",\"分隔",
+                    "title": "用户名"
+                  }
+                },
+                "required": ["username"],
+                "additionalProperties": false
+              },
+              "example": {
+                "username": "test"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["ErrCode", "Message"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "删除成功"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/ResetPassword": {
+      "post": {
+        "summary": "重置账户密码",
+        "deprecated": false,
+        "description": "重置账户的密码，支持批量",
+        "operationId": "ResetPassword",
+        "tags": ["account"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "支持批量重置，用\",\"分隔",
+                    "title": "用户名"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "password 参数",
+                    "title": "新密码"
+                  }
+                },
+                "required": ["username", "password"],
+                "additionalProperties": false
+              },
+              "example": {
+                "username": "test",
+                "password": "123123"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["ErrCode", "Message"],
+                  "description": "原始文档未提供明确返回结构"
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "密码重置成功"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/AssignRolesToUsers": {
+      "post": {
+        "summary": "分配角色到用户",
+        "deprecated": false,
+        "description": "为用户分配角色，支持批量用户，支持分配多个角色，用\",\"分隔",
+        "operationId": "assignRolesToUsers",
+        "tags": ["account"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uniqueKey": {
+                    "type": "string",
+                    "description": "角色唯一标识。支持多个，用\",\"分隔"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "需要分配的账户。支持多个，用\",\"分隔"
+                  }
+                },
+                "required": ["uniqueKey", "username"],
+                "additionalProperties": false
+              },
+              "example": {
+                "uniqueKey": "14~1,15~1",
+                "username": "test"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["ErrCode", "Message"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "分配角色成功"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/assignOrgToUsers": {
+      "post": {
+        "summary": "分配部门到用户",
+        "deprecated": false,
+        "description": "为用户分配部门，支持批量操作多个用户，支持为单个用户分配至多个部门节点，用\",\"分隔",
+        "operationId": "assignOrgToUsers",
+        "tags": ["account"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "orgIds": {
+                    "type": "string",
+                    "description": "组织节点 ID。支持多个，用\",\"分隔"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "需要被分配的用户。支持多个，用\",\"分隔"
+                  }
+                },
+                "required": ["orgIds", "username"],
+                "additionalProperties": false
+              },
+              "example": {
+                "orgIds": "7,8",
+                "username": "test"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["ErrCode", "Message"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "分配组织节点成功"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/GetRoleListByPage": {
+      "get": {
+        "summary": "获取角色分页列表",
+        "deprecated": false,
+        "description": "获取活字格服务的角色列表，支持分页",
+        "tags": ["role"],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "第几页",
+            "required": true,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "每页加载的数据量",
+            "required": true,
+            "example": "5",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer",
+                      "title": "返回码",
+                      "description": "为 0 时表示请求成功，非 0 代表接口出现异常"
+                    },
+                    "Message": {
+                      "type": "string",
+                      "title": "返回信息"
+                    },
+                    "total": {
+                      "type": "integer",
+                      "title": "数据总条数"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/role-info"
+                      }
+                    }
+                  },
+                  "required": ["ErrCode", "Message", "data", "total"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "success",
+                  "total": 38,
+                  "data": [
+                    {
+                      "Id": 1,
+                      "uniqueKey": "1~0",
+                      "pUniqueKey": "",
+                      "icon": "80c6830e-12e9-43b4-bcd1-0bfd0eb5242b_文件夹(1).svg",
+                      "name": "岗位",
+                      "isRole": 0,
+                      "pId": null,
+                      "sort": 1
+                    },
+                    {
+                      "Id": 1,
+                      "uniqueKey": "1~1",
+                      "pUniqueKey": "",
+                      "icon": "aee90656-c73f-42a0-8625-e3a88e74e350_用户_角色.svg",
+                      "name": "Administrator",
+                      "isRole": 1,
+                      "pId": null,
+                      "sort": 1
+                    },
+                    {
+                      "Id": 2,
+                      "uniqueKey": "2~1",
+                      "pUniqueKey": "",
+                      "icon": "aee90656-c73f-42a0-8625-e3a88e74e350_用户_角色.svg",
+                      "name": "部门经理",
+                      "isRole": 1,
+                      "pId": null,
+                      "sort": 2
+                    },
+                    {
+                      "Id": 3,
+                      "uniqueKey": "3~1",
+                      "pUniqueKey": "",
+                      "icon": "aee90656-c73f-42a0-8625-e3a88e74e350_用户_角色.svg",
+                      "name": "财务部",
+                      "isRole": 1,
+                      "pId": null,
+                      "sort": 3
+                    },
+                    {
+                      "Id": 4,
+                      "uniqueKey": "4~1",
+                      "pUniqueKey": "",
+                      "icon": "aee90656-c73f-42a0-8625-e3a88e74e350_用户_角色.svg",
+                      "name": "出差Admin",
+                      "isRole": 1,
+                      "pId": null,
+                      "sort": 4
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/GetRoleList": {
+      "get": {
+        "summary": "获取角色全量列表",
+        "deprecated": false,
+        "description": "获取角色全量数据，用于构建角色树",
+        "tags": ["role"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer",
+                      "description": "为 0 时表示请求成功，非 0 代表接口出现异常",
+                      "title": "返回码"
+                    },
+                    "Message": {
+                      "type": "string",
+                      "title": "返回信息"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/role-info"
+                      }
+                    }
+                  },
+                  "required": ["ErrCode", "Message", "data"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "success",
+                  "data": [
+                    {
+                      "Id": 1,
+                      "uniqueKey": "1~0",
+                      "pUniqueKey": "",
+                      "icon": "80c6830e-12e9-43b4-bcd1-0bfd0eb5242b_文件夹(1).svg",
+                      "name": "岗位",
+                      "isRole": 0,
+                      "pId": null,
+                      "sort": 1
+                    },
+                    {
+                      "Id": 1,
+                      "uniqueKey": "1~1",
+                      "pUniqueKey": "",
+                      "icon": "aee90656-c73f-42a0-8625-e3a88e74e350_用户_角色.svg",
+                      "name": "Administrator",
+                      "isRole": 1,
+                      "pId": null,
+                      "sort": 1
+                    },
+                    {
+                      "Id": 2,
+                      "uniqueKey": "2~1",
+                      "pUniqueKey": "",
+                      "icon": "aee90656-c73f-42a0-8625-e3a88e74e350_用户_角色.svg",
+                      "name": "部门经理",
+                      "isRole": 1,
+                      "pId": null,
+                      "sort": 2
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/AddRole": {
+      "post": {
+        "summary": "新增角色",
+        "deprecated": false,
+        "description": "向系统中添加角色",
+        "operationId": "AddRole",
+        "tags": ["role"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "roleName": {
+                    "type": "string",
+                    "title": "角色名称"
+                  },
+                  "roleTypeId": {
+                    "type": ["integer", "null"],
+                    "title": "分类ID"
+                  },
+                  "roleDescription": {
+                    "type": ["string", "null"],
+                    "title": "描述"
+                  }
+                },
+                "required": ["roleName", "roleTypeId", "roleDescription"],
+                "additionalProperties": false
+              },
+              "example": {
+                "roleName": "测试角色-2",
+                "roleTypeId": null,
+                "roleDescription": "lalal"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/role-resp",
+                      "description": "返回角色信息"
+                    }
+                  },
+                  "required": ["ErrCode", "Message", "data"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "success",
+                  "data": {
+                    "roleId": 22,
+                    "roleTypeId": null,
+                    "uniqueKey": "22~1",
+                    "pUniqueKey": "",
+                    "name": "测试角色",
+                    "description": "123123123"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/EditRole": {
+      "post": {
+        "summary": "编辑角色",
+        "deprecated": false,
+        "description": "编辑角色信息",
+        "operationId": "EditRole",
+        "tags": ["role"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "roleId": {
+                    "type": "integer",
+                    "title": "角色id"
+                  },
+                  "roleName": {
+                    "type": "string",
+                    "title": "角色名称"
+                  },
+                  "roleTypeId": {
+                    "type": ["integer", "null"],
+                    "title": "角色分类Id"
+                  },
+                  "description": {
+                    "type": "string",
+                    "title": "描述"
+                  }
+                },
+                "required": ["roleId", "roleName", "roleTypeId", "description"],
+                "additionalProperties": false
+              },
+              "example": {
+                "roleId": 22,
+                "roleName": "测试角色 02",
+                "roleTypeId": null,
+                "description": "按时打算打"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/role-resp",
+                      "description": "返回修改后的角色信息"
+                    }
+                  },
+                  "required": ["ErrCode", "Message", "data"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "success",
+                  "data": {
+                    "roleId": 22,
+                    "roleTypeId": null,
+                    "uniqueKey": "22~1",
+                    "pUniqueKey": "",
+                    "name": "测试角色 02",
+                    "description": "按时打算打"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/AddRoleType": {
+      "post": {
+        "summary": "新增角色分类",
+        "deprecated": false,
+        "description": "添加角色分类，在活字格中，角色分类是文件夹类型",
+        "operationId": "AddRoleType",
+        "tags": ["role"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "roleTypeName": {
+                    "type": "string",
+                    "title": "角色分类名称"
+                  },
+                  "rolePTypeId": {
+                    "type": "integer",
+                    "title": "父分类Id"
+                  }
+                },
+                "required": ["roleTypeName", "rolePTypeId"],
+                "additionalProperties": false
+              },
+              "example": {
+                "roleTypeName": "测试分类-2",
+                "rolePTypeId": 2
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/role-type-resp"
+                    }
+                  },
+                  "required": ["ErrCode", "Message", "data"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "success",
+                  "data": {
+                    "Id": 3,
+                    "name": "测试分类-2",
+                    "pId": 2,
+                    "uniqueKey": "3~0",
+                    "pUniqueKey": "2~0"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/EditRoleType": {
+      "post": {
+        "summary": "编辑角色分类",
+        "deprecated": false,
+        "description": "修改角色分类的信息",
+        "operationId": "EditRoleType",
+        "tags": ["role"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "typeId": {
+                    "type": "integer",
+                    "title": "当前分类id"
+                  },
+                  "typeName": {
+                    "type": "string",
+                    "title": "分类名称"
+                  },
+                  "pTypeId": {
+                    "type": ["integer", "null"],
+                    "title": "父分类id"
+                  }
+                },
+                "required": ["typeId", "typeName", "pTypeId"],
+                "additionalProperties": false
+              },
+              "example": {
+                "typeId": 3,
+                "typeName": "模拟人生-1",
+                "pTypeId": 2
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/role-type-resp"
+                    }
+                  },
+                  "required": ["ErrCode", "Message", "data"],
+                  "description": "原始文档未提供明确返回结构"
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "success",
+                  "data": {
+                    "Id": 3,
+                    "name": "模拟人生",
+                    "pId": 2,
+                    "uniqueKey": "3~0",
+                    "pUniqueKey": "2~0"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/DeleteRole": {
+      "post": {
+        "summary": "删除角色或角色分类",
+        "deprecated": false,
+        "description": "该方法支持删除角色或角色分类。如果需要删除的是分类，该操作会把当前分类下的所有角色及角色分类均删除。",
+        "operationId": "DeleteRole",
+        "tags": ["role"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uniqueRoleKey": {
+                    "type": "string",
+                    "title": "角色唯一标识"
+                  }
+                },
+                "required": ["uniqueRoleKey"],
+                "additionalProperties": false
+              },
+              "example": {
+                "uniqueRoleKey": "19~1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["ErrCode", "Message"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "角色删除成功"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/ReorganizeRole": {
+      "post": {
+        "summary": "调整角色结构",
+        "deprecated": false,
+        "description": "调整角色的结构，包括切换角色的顺序，以及所属分类。",
+        "operationId": "reorganizeRole",
+        "tags": ["role"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "movedNodeId": {
+                    "type": "integer",
+                    "title": "移动节点ID"
+                  },
+                  "movedNodeIsRole": {
+                    "type": "integer",
+                    "title": "移动节点是否为角色"
+                  },
+                  "locationType": {
+                    "type": "string",
+                    "enum": ["before", "inner", "after"],
+                    "title": "拖拽类型"
+                  },
+                  "tragetNodeId": {
+                    "type": "integer",
+                    "title": "目标节点ID"
+                  },
+                  "targetNodeIsRole": {
+                    "type": "integer",
+                    "title": "目标节点是否为角色"
+                  }
+                },
+                "required": [
+                  "movedNodeId",
+                  "movedNodeIsRole",
+                  "locationType",
+                  "tragetNodeId",
+                  "targetNodeIsRole"
+                ],
+                "additionalProperties": false
+              },
+              "example": {
+                "movedNodeId": 22,
+                "movedNodeIsRole": 1,
+                "locationType": "inner",
+                "tragetNodeId": 3,
+                "targetNodeIsRole": 0
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["ErrCode", "Message"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "调整成功"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/AddRoleMember": {
+      "post": {
+        "summary": "添加角色成员",
+        "deprecated": false,
+        "description": "为角色添加用户成员",
+        "operationId": "AddRoleMember",
+        "tags": ["role"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "roleId": {
+                    "type": "integer",
+                    "title": "角色 Id"
+                  },
+                  "roleMembers": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "username": {
+                          "type": "string",
+                          "description": "用户名"
+                        }
+                      },
+                      "required": ["username"],
+                      "additionalProperties": false
+                    },
+                    "title": "需要添加的成员数组"
+                  }
+                },
+                "required": ["roleId", "roleMembers"],
+                "additionalProperties": false
+              },
+              "example": {
+                "roleId": 22,
+                "roleMembers": [
+                  {
+                    "username": "zhugeliang"
+                  },
+                  {
+                    "username": "guanyu"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["ErrCode", "Message"],
+                  "description": "原始文档未提供明确返回结构"
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "添加成功"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/RemoveMembersFromRole": {
+      "post": {
+        "summary": "移除角色成员",
+        "deprecated": false,
+        "description": "将成员从角色中移除",
+        "operationId": "RemoveMembersFromRole",
+        "tags": ["role"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "roleId": {
+                    "type": "integer",
+                    "description": "角色 Id"
+                  },
+                  "members": {
+                    "type": "string",
+                    "description": "成员用户名，支持多个，用\",\"分隔"
+                  }
+                },
+                "required": ["roleId", "members"],
+                "additionalProperties": false
+              },
+              "example": {
+                "roleId": 22,
+                "members": "guanyu,test"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["ErrCode", "Message"],
+                  "description": "原始文档未提供明确返回结构"
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "移除成功"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/AssignRoleToOrg": {
+      "post": {
+        "summary": "绑定角色到组织",
+        "deprecated": false,
+        "description": "将角色和组织结构进行绑定",
+        "operationId": "AssignRoleToOrg",
+        "tags": ["role"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "roleIds": {
+                    "type": "string",
+                    "description": "角色 Id，支持多个，用\",\"分隔"
+                  },
+                  "orgIds": {
+                    "type": "string",
+                    "description": "组织节点 id，支持多个，用\",\"分隔"
+                  }
+                },
+                "required": ["roleIds", "orgIds"],
+                "additionalProperties": false
+              },
+              "example": {
+                "roleIds": "22,17",
+                "orgIds": "4,3"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["ErrCode", "Message"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "绑定成功"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/CombineRoleGroup": {
+      "post": {
+        "summary": "分配权限角色到角色",
+        "deprecated": false,
+        "description": "为角色分配其他角色的权限",
+        "operationId": "CombineRoleGroup",
+        "tags": ["role"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "roleId": {
+                    "type": "integer",
+                    "description": "角色 Id"
+                  },
+                  "permissionRoleIds": {
+                    "type": "string",
+                    "description": "拥有权限的角色 id，支持多个，用\",\"分隔"
+                  }
+                },
+                "required": ["roleId", "permissionRoleIds"],
+                "additionalProperties": false
+              },
+              "example": {
+                "roleId": 22,
+                "permissionRoleIds": "15,16"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["ErrCode", "Message"],
+                  "description": "原始文档未提供明确返回结构"
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "角色继承成功"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/GetOrgListByPage": {
+      "get": {
+        "summary": "获取组织分页列表",
+        "deprecated": false,
+        "description": "获取活字格服务的组织节点列表，支持分页",
+        "tags": ["org"],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "第几页",
+            "required": true,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "每页加载的数据量",
+            "required": true,
+            "example": "5",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer",
+                      "title": "返回码",
+                      "description": "为 0 时表示请求成功，非 0 代表接口出现异常"
+                    },
+                    "Message": {
+                      "type": "string",
+                      "title": "返回信息"
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/org-info"
+                      }
+                    }
+                  },
+                  "required": ["ErrCode", "Message", "total", "data"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "success",
+                  "total": 25,
+                  "data": [
+                    {
+                      "orgId": 1,
+                      "name": "新机构1",
+                      "pOrgId": 0,
+                      "orgLevel": null,
+                      "sort": 1,
+                      "orgPath": "新机构1",
+                      "description": null
+                    },
+                    {
+                      "orgId": 2,
+                      "name": "xx公司",
+                      "pOrgId": 0,
+                      "orgLevel": "公司",
+                      "sort": 2,
+                      "orgPath": "xx公司",
+                      "description": null
+                    },
+                    {
+                      "orgId": 3,
+                      "name": "部门1",
+                      "pOrgId": 2,
+                      "orgLevel": "部门",
+                      "sort": 3,
+                      "orgPath": "xx公司/部门1",
+                      "description": null
+                    },
+                    {
+                      "orgId": 4,
+                      "name": "部门2",
+                      "pOrgId": 2,
+                      "orgLevel": "部门",
+                      "sort": 4,
+                      "orgPath": "xx公司/部门2",
+                      "description": null
+                    },
+                    {
+                      "orgId": 5,
+                      "name": "财务部",
+                      "pOrgId": 2,
+                      "orgLevel": "部门",
+                      "sort": 5,
+                      "orgPath": "xx公司/财务部",
+                      "description": null
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/GetOrgList": {
+      "get": {
+        "summary": "获取组织全量列表",
+        "deprecated": false,
+        "description": "获取组织节点全量数据，用于构建组织节点树",
+        "tags": ["org"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer",
+                      "title": "返回码",
+                      "description": "为 0 时表示请求成功，非 0 代表接口出现异常"
+                    },
+                    "Message": {
+                      "type": "string",
+                      "title": "返回信息"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/org-info"
+                      }
+                    }
+                  },
+                  "required": ["ErrCode", "Message", "data"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "success",
+                  "total": 25,
+                  "data": [
+                    {
+                      "orgId": 1,
+                      "name": "新机构1",
+                      "pOrgId": 0,
+                      "orgLevel": null,
+                      "sort": 1,
+                      "orgPath": "新机构1",
+                      "description": null
+                    },
+                    {
+                      "orgId": 2,
+                      "name": "xx公司",
+                      "pOrgId": 0,
+                      "orgLevel": "公司",
+                      "sort": 2,
+                      "orgPath": "xx公司",
+                      "description": null
+                    },
+                    {
+                      "orgId": 3,
+                      "name": "部门1",
+                      "pOrgId": 2,
+                      "orgLevel": "部门",
+                      "sort": 3,
+                      "orgPath": "xx公司/部门1",
+                      "description": null
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/AddOrg": {
+      "post": {
+        "summary": "新增组织",
+        "deprecated": false,
+        "description": "添加组织节点",
+        "operationId": "AddOrg",
+        "tags": ["org"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "orgName": {
+                    "type": "string",
+                    "description": "组织节点名称"
+                  },
+                  "orgPid": {
+                    "type": ["integer", "null"],
+                    "description": "父组织节点 Id"
+                  },
+                  "orgLevelId": {
+                    "type": ["integer", "null"],
+                    "description": "组织级别 Id"
+                  },
+                  "orgDescription": {
+                    "type": ["string", "null"],
+                    "description": "描述"
+                  }
+                },
+                "required": [
+                  "orgName",
+                  "orgPid",
+                  "orgLevelId",
+                  "orgDescription"
+                ],
+                "additionalProperties": false
+              },
+              "example": {
+                "orgName": "测试组织节点",
+                "orgPid": null,
+                "orgLevelId": null,
+                "orgDescription": ""
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["ErrCode", "Message"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "添加成功"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/EditOrg": {
+      "post": {
+        "summary": "更新组织",
+        "deprecated": false,
+        "description": "更新组织节点信息",
+        "operationId": "UpdateOrg",
+        "tags": ["org"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "orgId": {
+                    "type": "integer",
+                    "description": "组织节点ID"
+                  },
+                  "orgName": {
+                    "type": "string",
+                    "description": "组织节点名称"
+                  },
+                  "orgLevelId": {
+                    "type": ["integer", "null"],
+                    "description": "组织级别ID"
+                  },
+                  "orgDescription": {
+                    "type": ["string", "null"],
+                    "description": "组织描述"
+                  },
+                  "orgPNodeId": {
+                    "type": ["integer", "null"],
+                    "description": "父级组织节点ID"
+                  }
+                },
+                "required": [
+                  "orgId",
+                  "orgName",
+                  "orgLevelId",
+                  "orgDescription",
+                  "orgPNodeId"
+                ],
+                "additionalProperties": false
+              },
+              "example": {
+                "orgId": 26,
+                "orgName": "节点 26",
+                "orgLevelId": null,
+                "orgDescription": "",
+                "orgPNodeId": 25
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["ErrCode", "Message"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "修改成功"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/DeleteOrgs": {
+      "post": {
+        "summary": "删除组织",
+        "deprecated": false,
+        "description": "删除组织节点，支持批量删除",
+        "operationId": "DeleteOrgs",
+        "tags": ["org"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "orgIds": {
+                    "type": "string",
+                    "title": "组织 Id",
+                    "description": "支持批量，用\",\"分隔"
+                  }
+                },
+                "required": ["orgIds"],
+                "additionalProperties": false
+              },
+              "example": {
+                "orgIds": "26"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["ErrCode", "Message"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "删除成功"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/ReorganizeOrg": {
+      "post": {
+        "summary": "调整组织层级",
+        "deprecated": false,
+        "description": "移动组织节点的层级顺序",
+        "operationId": "reorganizeOrg",
+        "tags": ["org"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "targetOrgId": {
+                    "type": "integer",
+                    "title": "组织节点ID"
+                  },
+                  "orgId": {
+                    "type": "integer",
+                    "title": "移动组织节点ID"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["before", "inner", "after"],
+                    "title": "拖拽类型"
+                  }
+                },
+                "required": ["targetOrgId", "orgId", "type"],
+                "additionalProperties": false
+              },
+              "example": {
+                "targetOrgId": 13,
+                "orgId": 26,
+                "type": "after"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["ErrCode", "Message"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "调整成功"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/AddOrgMembers": {
+      "post": {
+        "summary": "添加组织成员",
+        "deprecated": false,
+        "description": "为组织节点添加成员，支持批量",
+        "operationId": "AddOrgMembers",
+        "tags": ["org"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "orgId": {
+                    "type": "string",
+                    "title": "组织结构ID"
+                  },
+                  "members": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "username": {
+                          "type": "string",
+                          "description": "members 数组项字段"
+                        }
+                      },
+                      "required": ["username"],
+                      "additionalProperties": false
+                    },
+                    "title": "组织成员"
+                  }
+                },
+                "required": ["orgId", "members"],
+                "additionalProperties": false
+              },
+              "example": {
+                "orgId": "25",
+                "members": [
+                  {
+                    "username": "zhangfei"
+                  },
+                  {
+                    "username": "zhugeliang"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["ErrCode", "Message"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "添加成员成功"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/RemoveMemberFormOrg": {
+      "post": {
+        "summary": "移除组织成员",
+        "deprecated": false,
+        "description": "从组织节点中移除成员，支持批量移除",
+        "operationId": "RemoveMemberFormOrg",
+        "tags": ["org"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "orgId": {
+                    "type": "integer",
+                    "title": "组织节点ID"
+                  },
+                  "members": {
+                    "type": "string",
+                    "title": "当前成员",
+                    "description": "支持多个，用\",\"分隔"
+                  }
+                },
+                "required": ["orgId", "members"],
+                "additionalProperties": false
+              },
+              "example": {
+                "orgId": 25,
+                "members": "zhugeliang,zhangfei"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ErrCode": {
+                      "type": "integer"
+                    },
+                    "Message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["ErrCode", "Message"]
+                },
+                "example": {
+                  "ErrCode": 0,
+                  "Message": "移除成员成功"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     }
   },
+  "webhooks": {},
   "components": {
     "schemas": {
-      "UserStatus": {
-        "type": "string",
-        "enum": ["active", "inactive", "locked"],
-        "description": "用户状态"
-      },
-      "User": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "string", "description": "用户 ID" },
-          "username": { "type": "string", "description": "用户名" },
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "邮箱地址"
-          },
-          "status": { "$ref": "#/components/schemas/UserStatus" },
-          "roles": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/Role" },
-            "description": "用户拥有的角色列表"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "description": "创建时间"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "description": "更新时间"
-          }
-        },
-        "required": ["id", "username", "status"]
-      },
-      "CreateUserRequest": {
+      "account-resp": {
         "type": "object",
         "properties": {
           "username": {
             "type": "string",
-            "description": "用户名",
-            "minLength": 2,
-            "maxLength": 50
+            "title": "用户名"
+          },
+          "fullName": {
+            "type": "string",
+            "title": "全名"
           },
           "email": {
             "type": "string",
-            "format": "email",
-            "description": "邮箱地址"
+            "title": "邮箱"
           },
-          "password": {
+          "isActived": {
             "type": "string",
-            "format": "password",
-            "description": "初始密码",
-            "minLength": 8
+            "title": "有效性"
           },
-          "roleIds": {
-            "type": "array",
-            "items": { "type": "string" },
-            "description": "初始角色 ID 列表"
+          "roles": {
+            "type": "string",
+            "title": "角色"
+          },
+          "orgSuperior": {
+            "type": "string",
+            "title": "组织上级"
           }
         },
-        "required": ["username", "password"]
+        "required": [
+          "username",
+          "fullName",
+          "email",
+          "isActived",
+          "roles",
+          "orgSuperior"
+        ],
+        "description": "返回修改后的账户信息"
       },
-      "Role": {
+      "role-resp": {
         "type": "object",
         "properties": {
-          "id": { "type": "string", "description": "角色 ID" },
-          "name": { "type": "string", "description": "角色名称" },
-          "description": { "type": "string", "description": "角色描述" },
-          "createdAt": {
+          "roleId": {
+            "type": "integer",
+            "title": "角色 id"
+          },
+          "roleTypeId": {
+            "type": ["integer", "null"],
+            "title": "角色分类 id"
+          },
+          "uniqueKey": {
             "type": "string",
-            "format": "date-time",
-            "description": "创建时间"
-          }
-        },
-        "required": ["id", "name"]
-      },
-      "CreateRoleRequest": {
-        "type": "object",
-        "properties": {
+            "title": "角色唯一标识"
+          },
+          "pUniqueKey": {
+            "type": ["string", "null"],
+            "title": "父角色唯一标识"
+          },
           "name": {
             "type": "string",
-            "description": "角色名称",
-            "minLength": 1,
-            "maxLength": 100
+            "title": "角色名称"
           },
-          "description": { "type": "string", "description": "角色描述" }
+          "description": {
+            "type": ["string", "null"],
+            "title": "描述"
+          }
         },
-        "required": ["name"]
+        "required": [
+          "roleId",
+          "roleTypeId",
+          "uniqueKey",
+          "pUniqueKey",
+          "name",
+          "description"
+        ]
       },
-      "Permission": {
+      "role-type-resp": {
         "type": "object",
         "properties": {
-          "id": { "type": "string", "description": "权限 ID" },
-          "name": { "type": "string", "description": "权限名称" },
-          "resource": { "type": "string", "description": "资源标识" },
-          "action": {
-            "type": "string",
-            "enum": ["read", "write", "delete", "manage"],
-            "description": "操作类型"
+          "Id": {
+            "type": "integer",
+            "title": "角色分类 Id"
           },
-          "description": { "type": "string", "description": "权限描述" }
+          "name": {
+            "type": "string",
+            "title": "角色分类名称"
+          },
+          "pId": {
+            "type": ["integer", "null"],
+            "title": "父角色分类 Id"
+          },
+          "uniqueKey": {
+            "type": "string",
+            "title": "角色唯一标识"
+          },
+          "pUniqueKey": {
+            "type": ["string", "null"],
+            "title": "父角色唯一标识"
+          }
         },
-        "required": ["id", "name", "resource", "action"]
+        "required": ["Id", "name", "pId", "uniqueKey", "pUniqueKey"]
+      },
+      "role-info": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "title": "角色 Id"
+          },
+          "uniqueKey": {
+            "type": "string",
+            "title": "角色唯一标识"
+          },
+          "pUniqueKey": {
+            "type": ["string", "null"],
+            "title": "父角色唯一标识"
+          },
+          "icon": {
+            "type": "string",
+            "title": "角色树 icon",
+            "description": " 需要自行拼接活字格图片资源的前缀地址"
+          },
+          "name": {
+            "type": "string",
+            "title": "角色名称"
+          },
+          "isRole": {
+            "type": "integer",
+            "title": "是否为角色",
+            "enum": [0, 1]
+          },
+          "pId": {
+            "type": ["integer", "null"],
+            "title": "父角色 Id"
+          },
+          "sort": {
+            "type": "integer",
+            "title": "排序"
+          }
+        },
+        "required": [
+          "Id",
+          "uniqueKey",
+          "pUniqueKey",
+          "icon",
+          "name",
+          "isRole",
+          "pId",
+          "sort"
+        ]
+      },
+      "org-info": {
+        "type": "object",
+        "properties": {
+          "orgId": {
+            "type": "integer",
+            "title": "组织节点 Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "组织节点名称"
+          },
+          "pOrgId": {
+            "type": "integer",
+            "title": "父组织节点 Id"
+          },
+          "orgLevel": {
+            "type": ["string", "null"],
+            "title": "组织级别名称"
+          },
+          "sort": {
+            "type": "integer",
+            "title": "排序"
+          },
+          "orgPath": {
+            "type": "string",
+            "title": "组织节点路径"
+          },
+          "description": {
+            "type": ["string", "null"],
+            "title": "描述"
+          }
+        },
+        "required": [
+          "orgId",
+          "name",
+          "pOrgId",
+          "orgLevel",
+          "sort",
+          "orgPath",
+          "description"
+        ]
+      }
+    },
+    "responses": {},
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer"
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "http://hzg.orb.local:8115/rbac/ServerCommand",
+      "description": "本地服务器"
+    }
+  ],
+  "security": [
+    {
+      "bearer": []
+    }
+  ]
 }
