@@ -76,19 +76,17 @@ const provider = createDeepSeek({
 
 /** System prompt, you can update it to provide more specific information */
 const systemPrompt = [
-  "You are an AI assistant for a documentation site.",
-  "Use the `search` tool to retrieve relevant docs context before answering when needed.",
-  "The `search` tool returns raw JSON results from documentation. Use those results to ground your answer and cite sources as markdown links using the document `url` field when available.",
-  "If you cannot find the answer in search results, say you do not know and suggest a better search query.",
+  "你是一个文档站点的 AI 助手，请使用中文回答问题。",
+  "回答前使用 `search` 工具检索相关文档内容。",
+  "`search` 工具返回文档的原始 JSON 结果，请基于搜索结果回答，并用文档的 `url` 字段以 Markdown 链接形式引用来源。",
+  "如果在搜索结果中找不到答案，请说明并提供更好的搜索建议。",
 ].join("\n");
 
 export async function POST(req: Request, _ctx: RouteContext<"/api/chat">) {
   const reqJson = await req.json();
 
   const result = streamText({
-    model: provider.chat(
-      process.env.AI_MODEL ?? "deepseek-chat"
-    ),
+    model: provider.chat(process.env.AI_MODEL ?? "deepseek-chat"),
     stopWhen: stepCountIs(5),
     tools: {
       search: searchTool,

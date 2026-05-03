@@ -1,6 +1,6 @@
 import { buttonVariants } from "fumadocs-ui/components/ui/button";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
-import { MessageCircleIcon } from "lucide-react";
+import { Bot } from "lucide-react";
 import {
   AISearch,
   AISearchPanel,
@@ -44,8 +44,8 @@ export default function Layout({ children }: LayoutProps<"/docs">) {
           )}
           position="float"
         >
-          <MessageCircleIcon className="size-4.5" />
-          Ask AI
+          <Bot className="size-4.5" />
+          AI 助手
         </AISearchTrigger>
       </AISearch>
 

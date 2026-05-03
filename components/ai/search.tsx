@@ -48,9 +48,9 @@ export function AISearchPanelHeader({
       {...props}
     >
       <div className="flex-1 px-3 py-2">
-        <p className="mb-2 font-medium text-sm">AI Chat</p>
+        <p className="mb-2 font-medium text-sm">AI 助手</p>
         <p className="text-fd-muted-foreground text-xs">
-          AI can be inaccurate, please verify the answers.
+          AI 引擎基于 DeepSeek
         </p>
       </div>
 
@@ -95,7 +95,7 @@ export function AISearchInputActions() {
           type="button"
         >
           <RefreshCw className="size-4" />
-          Retry
+          重试
         </button>
       )}
       <button
@@ -109,7 +109,7 @@ export function AISearchInputActions() {
         onClick={() => setMessages([])}
         type="button"
       >
-        Clear Chat
+        清空对话
       </button>
     </>
   );
@@ -173,7 +173,7 @@ export function AISearchInput(props: ComponentProps<"form">) {
             onStart(event);
           }
         }}
-        placeholder={isLoading ? "AI is answering..." : "Ask a question"}
+        placeholder={isLoading ? "AI 正在回答..." : "输入你的问题"}
         value={input}
       />
       {isLoading ? (
@@ -189,7 +189,7 @@ export function AISearchInput(props: ComponentProps<"form">) {
           type="button"
         >
           <Loader2 className="size-4 animate-spin text-fd-muted-foreground" />
-          Abort Answer
+          停止生成
         </button>
       ) : (
         <button
@@ -279,8 +279,8 @@ function Input(props: ComponentProps<"textarea">) {
 }
 
 const roleName: Record<string, string> = {
-  user: "you",
-  assistant: "fumadocs",
+  user: "你",
+  assistant: "FGC-RBAC",
 };
 
 function Message({
@@ -330,13 +330,13 @@ function Message({
             <SearchIcon className="size-4" />
             {call.state === "output-error" || call.state === "output-denied" ? (
               <p className="text-fd-error">
-                {call.errorText ?? "Failed to search"}
+                {call.errorText ?? "搜索失败"}
               </p>
             ) : (
               <p>
                 {call.output
-                  ? `${call.output.length} search results`
-                  : "Searching…"}
+                  ? `${call.output.length} 条搜索结果`
+                  : "搜索中…"}
               </p>
             )}
           </div>
@@ -373,7 +373,7 @@ export function AISearchTrigger({
     <button
       className={cn(
         position === "float" && [
-          "fixed inset-e-[calc(--spacing(4)+var(--removed-body-scroll-bar-size,0px))] bottom-4 z-20 w-24 gap-3 shadow-lg transition-[translate,opacity]",
+          "fixed inset-e-[calc(--spacing(4)+var(--removed-body-scroll-bar-size,0px))] bottom-4 z-20 gap-3 px-4 shadow-lg transition-[translate,opacity]",
           open && "translate-y-10 opacity-0",
         ],
         className
@@ -467,14 +467,14 @@ export function AISearchPanelList({
       {messages.length === 0 ? (
         <div className="flex size-full flex-col items-center justify-center gap-2 text-center text-fd-muted-foreground/80 text-sm">
           <MessageCircleIcon fill="currentColor" stroke="none" />
-          <p onClick={(e) => e.stopPropagation()}>Start a new chat below.</p>
+          <p onClick={(e) => e.stopPropagation()}>在下方开始对话</p>
         </div>
       ) : (
         <div className="flex flex-col gap-4 px-3">
           {chat.error && (
             <div className="rounded-lg border bg-fd-secondary p-2 text-fd-secondary-foreground">
               <p className="mb-1 text-fd-muted-foreground text-xs">
-                Request Failed: {chat.error.name}
+                请求失败：{chat.error.name}
               </p>
               <p className="text-sm">{chat.error.message}</p>
             </div>
