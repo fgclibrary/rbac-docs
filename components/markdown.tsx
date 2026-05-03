@@ -23,6 +23,9 @@ export interface Processor {
 
 const WORDS_SPLIT_REGEX = /(?=\s)/;
 
+// 不允许 span 子元素的表格结构标签
+const TABLE_STRUCTURE_TAGS = new Set(["table", "thead", "tbody", "tr"]);
+
 export function rehypeWrapWords() {
   return (tree: Root) => {
     visit(tree, ["text", "element"], (node, index, parent) => {
@@ -30,6 +33,14 @@ export function rehypeWrapWords() {
         return "skip";
       }
       if (node.type !== "text" || !parent || index === undefined) {
+        return;
+      }
+
+      // 跳过表格结构元素内的文本节点，避免生成无效 HTML
+      if (
+        parent.type === "element" &&
+        TABLE_STRUCTURE_TAGS.has(parent.tagName)
+      ) {
         return;
       }
 

@@ -1,4 +1,4 @@
-import { createOpenRouter } from "@openrouter/ai-sdk-provider";
+import { createDeepSeek } from "@ai-sdk/deepseek";
 import {
   convertToModelMessages,
   stepCountIs,
@@ -70,8 +70,8 @@ async function chunkedAll<O>(promises: Promise<O>[]): Promise<O[]> {
   return out;
 }
 
-const openrouter = createOpenRouter({
-  apiKey: process.env.OPENROUTER_API_KEY,
+const provider = createDeepSeek({
+  apiKey: process.env.AI_API_KEY,
 });
 
 /** System prompt, you can update it to provide more specific information */
@@ -86,8 +86,8 @@ export async function POST(req: Request, _ctx: RouteContext<"/api/chat">) {
   const reqJson = await req.json();
 
   const result = streamText({
-    model: openrouter.chat(
-      process.env.OPENROUTER_MODEL ?? "anthropic/claude-3.5-sonnet"
+    model: provider.chat(
+      process.env.AI_MODEL ?? "deepseek-chat"
     ),
     stopWhen: stepCountIs(5),
     tools: {
