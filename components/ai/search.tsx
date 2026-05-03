@@ -55,7 +55,7 @@ export function AISearchPanelHeader({
       </div>
 
       <button
-        aria-label="Close"
+        aria-label="关闭"
         className={cn(
           buttonVariants({
             size: "icon-sm",
