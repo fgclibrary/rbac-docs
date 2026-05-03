@@ -5,7 +5,6 @@ import {
   ClerkLoading,
   Show,
   SignInButton,
-  SignUpButton,
   UserButton,
 } from "@clerk/nextjs";
 import { Loader2 } from "lucide-react";
@@ -18,8 +17,11 @@ export function AuthNav() {
       </ClerkLoading>
       <ClerkLoaded>
         <Show when="signed-out">
-          <SignInButton mode="modal" />
-          <SignUpButton mode="modal" />
+          <SignInButton mode="modal" withSignUp={false}>
+            <span className="cursor-pointer rounded-md bg-fd-primary px-2.5 py-1.5 font-medium text-fd-primary-foreground text-xs transition-colors hover:bg-fd-primary/90">
+              登录
+            </span>
+          </SignInButton>
         </Show>
         <Show when="signed-in">
           <UserButton

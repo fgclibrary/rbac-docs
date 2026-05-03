@@ -22,9 +22,14 @@ const { rewrite: rewriteSuffix } = rewritePath(
 );
 
 export default clerkMiddleware(async (auth, request) => {
-  // 非公开路由强制登录
+  // 非公开路由需要登录，未登录时重定向到首页弹出登录窗口
   if (!isPublicRoute(request)) {
-    await auth.protect();
+    const { userId } = await auth();
+    if (!userId) {
+      const url = new URL("/", request.url);
+      url.searchParams.set("showLogin", "true");
+      return NextResponse.redirect(url);
+    }
   }
 
   // Fumadocs 内容协商

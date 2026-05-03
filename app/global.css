@@ -135,6 +135,13 @@ html > body[data-scroll-locked] {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* Clerk modal 居中 */
+.cl-modalBackdrop {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

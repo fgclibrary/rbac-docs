@@ -1,6 +1,7 @@
-import { ArrowRight, Boxes, Eye, Layers, Plug, Zap } from "lucide-react";
-import Link from "next/link";
-import { appName, docsRoute } from "@/lib/shared";
+import { Boxes, Eye, Layers, Plug, Zap } from "lucide-react";
+import { Suspense } from "react";
+import { appName } from "@/lib/shared";
+import { HomeCTA } from "@/components/home-cta";
 
 // 框架特性列表
 const features = [
@@ -48,21 +49,9 @@ export default function HomePage() {
           深度整合用户、角色、组织架构及权限组管理能力，只需引入功能模块并完成简单配置，即可快速完成系统集成。
         </p>
 
-        <div className="mt-10 flex items-center gap-4">
-          <Link
-            className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-2.5 font-medium text-primary-foreground text-sm transition-opacity hover:opacity-90"
-            href={`${docsRoute}/guide/quick-start`}
-          >
-            快速开始
-            <ArrowRight className="size-4" />
-          </Link>
-          <Link
-            className="inline-flex items-center gap-2 rounded-lg border px-6 py-2.5 font-medium text-sm transition-colors hover:bg-accent"
-            href={`${docsRoute}/api`}
-          >
-            服务端命令文档
-          </Link>
-        </div>
+        <Suspense>
+          <HomeCTA />
+        </Suspense>
       </section>
 
       {/* 右侧：特性列表，占约 45% */}
