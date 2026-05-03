@@ -25,9 +25,7 @@
         "summary": "获取账户列表",
         "deprecated": false,
         "description": "分页获取活字格服务中的账户列表，返回账户基本信息、角色及所属组织层级。",
-        "tags": [
-          "account"
-        ],
+        "tags": ["account"],
         "parameters": [
           {
             "name": "page",
@@ -121,12 +119,7 @@
                       "description": "账户列表"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message",
-                    "total",
-                    "data"
-                  ]
+                  "required": ["ErrCode", "Message", "total", "data"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -194,9 +187,7 @@
         "deprecated": false,
         "description": "为活字格服务添加一个新的账户",
         "operationId": "AddAccount",
-        "tags": [
-          "account"
-        ],
+        "tags": ["account"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -210,10 +201,7 @@
                     "description": "账户登录名，需唯一"
                   },
                   "fullName": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": ["string", "null"],
                     "title": "全名",
                     "description": "用户真实姓名，可为空"
                   },
@@ -229,10 +217,7 @@
                   },
                   "isActived": {
                     "type": "integer",
-                    "enum": [
-                      1,
-                      0
-                    ],
+                    "enum": [1, 0],
                     "title": "有效性",
                     "description": "账户启用状态：1 表示有效，0 表示无效"
                   },
@@ -242,12 +227,7 @@
                     "title": "所属组织节点 ID"
                   }
                 },
-                "required": [
-                  "username",
-                  "email",
-                  "password",
-                  "isActived"
-                ],
+                "required": ["username", "email", "password", "isActived"],
                 "additionalProperties": false
               },
               "example": {
@@ -284,11 +264,7 @@
                       "$ref": "#/components/schemas/AccountInfo"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message",
-                    "data"
-                  ]
+                  "required": ["ErrCode", "Message", "data"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -320,9 +296,7 @@
         "deprecated": false,
         "description": "修改指定账户的基本信息，包括姓名、邮箱、启用状态及所属组织。",
         "operationId": "EditAccount",
-        "tags": [
-          "account"
-        ],
+        "tags": ["account"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -336,10 +310,7 @@
                     "description": "要编辑的账户登录名"
                   },
                   "fullName": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": ["string", "null"],
                     "title": "全名",
                     "description": "用户真实姓名，可为空"
                   },
@@ -359,11 +330,7 @@
                     "title": "所属组织节点 ID"
                   }
                 },
-                "required": [
-                  "username",
-                  "email",
-                  "isActived"
-                ],
+                "required": ["username", "email", "isActived"],
                 "additionalProperties": false
               },
               "example": {
@@ -399,11 +366,7 @@
                       "description": "修改后的账户信息"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message",
-                    "data"
-                  ]
+                  "required": ["ErrCode", "Message", "data"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -435,9 +398,7 @@
         "deprecated": false,
         "description": "删除指定账户，支持同时删除多个账户（用户名以英文逗号分隔）。",
         "operationId": "DeleteAccount",
-        "tags": [
-          "account"
-        ],
+        "tags": ["account"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -451,9 +412,7 @@
                     "title": "用户名"
                   }
                 },
-                "required": [
-                  "username"
-                ],
+                "required": ["username"],
                 "additionalProperties": false
               },
               "example": {
@@ -482,10 +441,7 @@
                       "description": "返回信息描述"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message"
-                  ]
+                  "required": ["ErrCode", "Message"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -509,9 +465,7 @@
         "deprecated": false,
         "description": "重置指定账户的登录密码，支持批量操作（用户名以英文逗号分隔）。",
         "operationId": "ResetPassword",
-        "tags": [
-          "account"
-        ],
+        "tags": ["account"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -530,10 +484,7 @@
                     "title": "新密码"
                   }
                 },
-                "required": [
-                  "username",
-                  "password"
-                ],
+                "required": ["username", "password"],
                 "additionalProperties": false
               },
               "example": {
@@ -563,10 +514,7 @@
                       "description": "返回信息描述"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message"
-                  ]
+                  "required": ["ErrCode", "Message"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -590,9 +538,7 @@
         "deprecated": false,
         "description": "为指定账户分配角色。支持批量操作：多个账户和多个角色均以英文逗号分隔。",
         "operationId": "AssignRolesToUsers",
-        "tags": [
-          "account"
-        ],
+        "tags": ["account"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -611,10 +557,7 @@
                     "title": "用户名"
                   }
                 },
-                "required": [
-                  "uniqueKey",
-                  "username"
-                ],
+                "required": ["uniqueKey", "username"],
                 "additionalProperties": false
               },
               "example": {
@@ -644,10 +587,7 @@
                       "description": "返回信息描述"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message"
-                  ]
+                  "required": ["ErrCode", "Message"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -671,9 +611,7 @@
         "deprecated": false,
         "description": "为指定账户分配组织节点。支持批量操作：多个账户和多个组织节点均以英文逗号分隔。",
         "operationId": "AssignOrgToUsers",
-        "tags": [
-          "account"
-        ],
+        "tags": ["account"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -692,10 +630,7 @@
                     "title": "用户名"
                   }
                 },
-                "required": [
-                  "orgIds",
-                  "username"
-                ],
+                "required": ["orgIds", "username"],
                 "additionalProperties": false
               },
               "example": {
@@ -725,10 +660,7 @@
                       "description": "返回信息描述"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message"
-                  ]
+                  "required": ["ErrCode", "Message"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -751,9 +683,7 @@
         "summary": "获取角色分页列表",
         "deprecated": false,
         "description": "分页获取活字格服务中的角色列表，返回角色树节点的平铺数据。",
-        "tags": [
-          "role"
-        ],
+        "tags": ["role"],
         "parameters": [
           {
             "name": "page",
@@ -807,12 +737,7 @@
                       "description": "角色节点列表"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message",
-                    "data",
-                    "total"
-                  ]
+                  "required": ["ErrCode", "Message", "data", "total"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -889,9 +814,7 @@
         "summary": "获取角色全量列表",
         "deprecated": false,
         "description": "获取所有角色节点的全量数据，通常用于构建角色树。",
-        "tags": [
-          "role"
-        ],
+        "tags": ["role"],
         "parameters": [],
         "responses": {
           "200": {
@@ -919,11 +842,7 @@
                       "description": "角色节点列表"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message",
-                    "data"
-                  ]
+                  "required": ["ErrCode", "Message", "data"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -980,9 +899,7 @@
         "deprecated": false,
         "description": "新增一个角色，可指定角色名称、所属分类及描述。",
         "operationId": "AddRole",
-        "tags": [
-          "role"
-        ],
+        "tags": ["role"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -996,27 +913,17 @@
                     "description": "角色名称，需唯一"
                   },
                   "roleTypeId": {
-                    "type": [
-                      "integer",
-                      "null"
-                    ],
+                    "type": ["integer", "null"],
                     "title": "分类ID",
                     "description": "所属角色分类 ID，为 null 时表示未分类"
                   },
                   "roleDescription": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": ["string", "null"],
                     "title": "描述",
                     "description": "角色描述信息，可为空"
                   }
                 },
-                "required": [
-                  "roleName",
-                  "roleTypeId",
-                  "roleDescription"
-                ],
+                "required": ["roleName", "roleTypeId", "roleDescription"],
                 "additionalProperties": false
               },
               "example": {
@@ -1051,11 +958,7 @@
                       "description": "新增后的角色信息"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message",
-                    "data"
-                  ]
+                  "required": ["ErrCode", "Message", "data"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -1087,9 +990,7 @@
         "deprecated": false,
         "description": "修改指定角色的名称、所属分类及描述信息。",
         "operationId": "EditRole",
-        "tags": [
-          "role"
-        ],
+        "tags": ["role"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -1108,10 +1009,7 @@
                     "description": "角色名称"
                   },
                   "roleTypeId": {
-                    "type": [
-                      "integer",
-                      "null"
-                    ],
+                    "type": ["integer", "null"],
                     "title": "角色分类Id",
                     "description": "所属角色分类 ID，为 null 时表示未分类"
                   },
@@ -1121,12 +1019,7 @@
                     "description": "角色描述信息"
                   }
                 },
-                "required": [
-                  "roleId",
-                  "roleName",
-                  "roleTypeId",
-                  "description"
-                ],
+                "required": ["roleId", "roleName", "roleTypeId", "description"],
                 "additionalProperties": false
               },
               "example": {
@@ -1162,11 +1055,7 @@
                       "description": "返回修改后的角色信息"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message",
-                    "data"
-                  ]
+                  "required": ["ErrCode", "Message", "data"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -1198,9 +1087,7 @@
         "deprecated": false,
         "description": "新增角色分类（对应活字格中的文件夹类型节点），可指定父分类实现层级嵌套。",
         "operationId": "AddRoleType",
-        "tags": [
-          "role"
-        ],
+        "tags": ["role"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -1219,10 +1106,7 @@
                     "description": "父级角色分类 ID，顶级分类传入 0 或对应根节点 ID"
                   }
                 },
-                "required": [
-                  "roleTypeName",
-                  "rolePTypeId"
-                ],
+                "required": ["roleTypeName", "rolePTypeId"],
                 "additionalProperties": false
               },
               "example": {
@@ -1256,11 +1140,7 @@
                       "description": "新增后的角色分类信息"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message",
-                    "data"
-                  ]
+                  "required": ["ErrCode", "Message", "data"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -1291,9 +1171,7 @@
         "deprecated": false,
         "description": "修改指定角色分类的名称及父级分类。",
         "operationId": "EditRoleType",
-        "tags": [
-          "role"
-        ],
+        "tags": ["role"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -1312,19 +1190,12 @@
                     "description": "角色分类名称"
                   },
                   "pTypeId": {
-                    "type": [
-                      "integer",
-                      "null"
-                    ],
+                    "type": ["integer", "null"],
                     "title": "父分类id",
                     "description": "父级角色分类 ID，为 null 时表示顶级分类"
                   }
                 },
-                "required": [
-                  "typeId",
-                  "typeName",
-                  "pTypeId"
-                ],
+                "required": ["typeId", "typeName", "pTypeId"],
                 "additionalProperties": false
               },
               "example": {
@@ -1359,11 +1230,7 @@
                       "description": "修改后的角色分类信息"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message",
-                    "data"
-                  ]
+                  "required": ["ErrCode", "Message", "data"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -1394,9 +1261,7 @@
         "deprecated": false,
         "description": "删除指定角色或角色分类。删除分类时，其下所有子角色和子分类将一并删除。",
         "operationId": "DeleteRole",
-        "tags": [
-          "role"
-        ],
+        "tags": ["role"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -1410,9 +1275,7 @@
                     "description": "要删除的角色或角色分类的唯一标识"
                   }
                 },
-                "required": [
-                  "uniqueRoleKey"
-                ],
+                "required": ["uniqueRoleKey"],
                 "additionalProperties": false
               },
               "example": {
@@ -1441,10 +1304,7 @@
                       "description": "返回信息描述"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message"
-                  ]
+                  "required": ["ErrCode", "Message"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -1468,9 +1328,7 @@
         "deprecated": false,
         "description": "调整角色树中的节点位置，支持修改排序和变更所属分类。通过拖拽类型控制放置方式。",
         "operationId": "ReorganizeRole",
-        "tags": [
-          "role"
-        ],
+        "tags": ["role"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -1490,11 +1348,7 @@
                   },
                   "locationType": {
                     "type": "string",
-                    "enum": [
-                      "before",
-                      "inner",
-                      "after"
-                    ],
+                    "enum": ["before", "inner", "after"],
                     "title": "拖拽类型",
                     "description": "放置方式：before 表示在目标节点之前，inner 表示放入目标节点内部，after 表示在目标节点之后"
                   },
@@ -1548,10 +1402,7 @@
                       "description": "返回信息描述"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message"
-                  ]
+                  "required": ["ErrCode", "Message"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -1575,9 +1426,7 @@
         "deprecated": false,
         "description": "为指定角色批量添加用户成员。",
         "operationId": "AddRoleMember",
-        "tags": [
-          "role"
-        ],
+        "tags": ["role"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -1601,19 +1450,14 @@
                           "title": "用户名"
                         }
                       },
-                      "required": [
-                        "username"
-                      ],
+                      "required": ["username"],
                       "additionalProperties": false
                     },
                     "title": "需要添加的成员数组",
                     "description": "要添加的用户成员列表"
                   }
                 },
-                "required": [
-                  "roleId",
-                  "roleMembers"
-                ],
+                "required": ["roleId", "roleMembers"],
                 "additionalProperties": false
               },
               "example": {
@@ -1650,10 +1494,7 @@
                       "description": "返回信息描述"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message"
-                  ]
+                  "required": ["ErrCode", "Message"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -1677,9 +1518,7 @@
         "deprecated": false,
         "description": "将指定用户从角色中移除，支持批量操作（用户名以英文逗号分隔）。",
         "operationId": "RemoveMembersFromRole",
-        "tags": [
-          "role"
-        ],
+        "tags": ["role"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -1698,10 +1537,7 @@
                     "title": "成员用户名"
                   }
                 },
-                "required": [
-                  "roleId",
-                  "members"
-                ],
+                "required": ["roleId", "members"],
                 "additionalProperties": false
               },
               "example": {
@@ -1731,10 +1567,7 @@
                       "description": "返回信息描述"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message"
-                  ]
+                  "required": ["ErrCode", "Message"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -1758,9 +1591,7 @@
         "deprecated": false,
         "description": "将指定角色绑定到组织节点，建立角色与组织的关联关系。",
         "operationId": "AssignRoleToOrg",
-        "tags": [
-          "role"
-        ],
+        "tags": ["role"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -1779,10 +1610,7 @@
                     "title": "组织节点 ID"
                   }
                 },
-                "required": [
-                  "roleIds",
-                  "orgIds"
-                ],
+                "required": ["roleIds", "orgIds"],
                 "additionalProperties": false
               },
               "example": {
@@ -1812,10 +1640,7 @@
                       "description": "返回信息描述"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message"
-                  ]
+                  "required": ["ErrCode", "Message"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -1839,9 +1664,7 @@
         "deprecated": false,
         "description": "为目标角色继承其他角色的权限，实现角色间的权限组合。",
         "operationId": "CombineRoleGroup",
-        "tags": [
-          "role"
-        ],
+        "tags": ["role"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -1860,10 +1683,7 @@
                     "title": "权限角色 ID"
                   }
                 },
-                "required": [
-                  "roleId",
-                  "permissionRoleIds"
-                ],
+                "required": ["roleId", "permissionRoleIds"],
                 "additionalProperties": false
               },
               "example": {
@@ -1893,10 +1713,7 @@
                       "description": "返回信息描述"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message"
-                  ]
+                  "required": ["ErrCode", "Message"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -1919,9 +1736,7 @@
         "summary": "获取组织分页列表",
         "deprecated": false,
         "description": "分页获取活字格服务中的组织节点列表。",
-        "tags": [
-          "org"
-        ],
+        "tags": ["org"],
         "parameters": [
           {
             "name": "page",
@@ -1975,12 +1790,7 @@
                       "description": "组织节点列表"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message",
-                    "total",
-                    "data"
-                  ]
+                  "required": ["ErrCode", "Message", "total", "data"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -2052,9 +1862,7 @@
         "summary": "获取组织全量列表",
         "deprecated": false,
         "description": "获取所有组织节点的全量数据，通常用于构建组织树。",
-        "tags": [
-          "org"
-        ],
+        "tags": ["org"],
         "parameters": [],
         "responses": {
           "200": {
@@ -2082,11 +1890,7 @@
                       "description": "组织节点列表"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message",
-                    "data"
-                  ]
+                  "required": ["ErrCode", "Message", "data"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -2141,9 +1945,7 @@
         "deprecated": false,
         "description": "新增一个组织节点，可指定名称、父级节点、组织级别及描述。",
         "operationId": "AddOrg",
-        "tags": [
-          "org"
-        ],
+        "tags": ["org"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -2157,26 +1959,17 @@
                     "title": "组织名称"
                   },
                   "orgPid": {
-                    "type": [
-                      "integer",
-                      "null"
-                    ],
+                    "type": ["integer", "null"],
                     "description": "父级组织节点 ID，顶级节点传入 null",
                     "title": "父组织节点 ID"
                   },
                   "orgLevelId": {
-                    "type": [
-                      "integer",
-                      "null"
-                    ],
+                    "type": ["integer", "null"],
                     "description": "组织级别 ID，对应组织级别配置，可为 null",
                     "title": "组织级别 ID"
                   },
                   "orgDescription": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": ["string", "null"],
                     "description": "组织节点描述信息",
                     "title": "描述"
                   }
@@ -2218,10 +2011,7 @@
                       "description": "返回信息描述"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message"
-                  ]
+                  "required": ["ErrCode", "Message"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -2245,9 +2035,7 @@
         "deprecated": false,
         "description": "修改指定组织节点的名称、组织级别、描述及父级节点。",
         "operationId": "EditOrg",
-        "tags": [
-          "org"
-        ],
+        "tags": ["org"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -2266,26 +2054,17 @@
                     "title": "组织名称"
                   },
                   "orgLevelId": {
-                    "type": [
-                      "integer",
-                      "null"
-                    ],
+                    "type": ["integer", "null"],
                     "description": "组织级别 ID，对应组织级别配置，可为 null",
                     "title": "组织级别 ID"
                   },
                   "orgDescription": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": ["string", "null"],
                     "description": "组织节点描述信息",
                     "title": "描述"
                   },
                   "orgPNodeId": {
-                    "type": [
-                      "integer",
-                      "null"
-                    ],
+                    "type": ["integer", "null"],
                     "description": "父级组织节点 ID，为 null 时表示顶级节点",
                     "title": "父组织节点 ID"
                   }
@@ -2329,10 +2108,7 @@
                       "description": "返回信息描述"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message"
-                  ]
+                  "required": ["ErrCode", "Message"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -2356,9 +2132,7 @@
         "deprecated": false,
         "description": "删除指定的组织节点，支持批量删除（ID 以英文逗号分隔）。删除父节点不会级联删除子节点。",
         "operationId": "DeleteOrgs",
-        "tags": [
-          "org"
-        ],
+        "tags": ["org"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -2372,9 +2146,7 @@
                     "description": "要删除的组织节点 ID，多个以英文逗号分隔"
                   }
                 },
-                "required": [
-                  "orgIds"
-                ],
+                "required": ["orgIds"],
                 "additionalProperties": false
               },
               "example": {
@@ -2403,10 +2175,7 @@
                       "description": "返回信息描述"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message"
-                  ]
+                  "required": ["ErrCode", "Message"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -2430,9 +2199,7 @@
         "deprecated": false,
         "description": "调整组织树中的节点位置，通过拖拽类型控制放置方式。",
         "operationId": "ReorganizeOrg",
-        "tags": [
-          "org"
-        ],
+        "tags": ["org"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -2452,20 +2219,12 @@
                   },
                   "type": {
                     "type": "string",
-                    "enum": [
-                      "before",
-                      "inner",
-                      "after"
-                    ],
+                    "enum": ["before", "inner", "after"],
                     "title": "拖拽类型",
                     "description": "放置方式：before 表示在目标节点之前，inner 表示放入目标节点内部，after 表示在目标节点之后"
                   }
                 },
-                "required": [
-                  "targetOrgId",
-                  "orgId",
-                  "type"
-                ],
+                "required": ["targetOrgId", "orgId", "type"],
                 "additionalProperties": false
               },
               "example": {
@@ -2496,10 +2255,7 @@
                       "description": "返回信息描述"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message"
-                  ]
+                  "required": ["ErrCode", "Message"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -2523,9 +2279,7 @@
         "deprecated": false,
         "description": "为指定组织节点批量添加用户成员。",
         "operationId": "AddOrgMembers",
-        "tags": [
-          "org"
-        ],
+        "tags": ["org"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -2549,19 +2303,14 @@
                           "title": "用户名"
                         }
                       },
-                      "required": [
-                        "username"
-                      ],
+                      "required": ["username"],
                       "additionalProperties": false
                     },
                     "title": "组织成员",
                     "description": "要添加的用户成员列表"
                   }
                 },
-                "required": [
-                  "orgId",
-                  "members"
-                ],
+                "required": ["orgId", "members"],
                 "additionalProperties": false
               },
               "example": {
@@ -2598,10 +2347,7 @@
                       "description": "返回信息描述"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message"
-                  ]
+                  "required": ["ErrCode", "Message"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -2625,9 +2371,7 @@
         "deprecated": false,
         "description": "从指定组织节点中移除用户成员，支持批量操作（用户名以英文逗号分隔）。",
         "operationId": "RemoveMemberFormOrg",
-        "tags": [
-          "org"
-        ],
+        "tags": ["org"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -2646,10 +2390,7 @@
                     "description": "要移除的成员用户名，多个以英文逗号分隔"
                   }
                 },
-                "required": [
-                  "orgId",
-                  "members"
-                ],
+                "required": ["orgId", "members"],
                 "additionalProperties": false
               },
               "example": {
@@ -2679,10 +2420,7 @@
                       "description": "返回信息描述"
                     }
                   },
-                  "required": [
-                    "ErrCode",
-                    "Message"
-                  ]
+                  "required": ["ErrCode", "Message"]
                 },
                 "example": {
                   "ErrCode": 0,
@@ -2757,10 +2495,7 @@
             "description": "角色 ID"
           },
           "roleTypeId": {
-            "type": [
-              "integer",
-              "null"
-            ],
+            "type": ["integer", "null"],
             "title": "角色分类 ID",
             "description": "所属角色分类 ID，为 null 时表示未分类"
           },
@@ -2770,10 +2505,7 @@
             "description": "角色唯一标识，格式为 \"{id}~1\""
           },
           "pUniqueKey": {
-            "type": [
-              "string",
-              "null"
-            ],
+            "type": ["string", "null"],
             "title": "父角色唯一标识",
             "description": "父节点唯一标识，顶级角色为空字符串"
           },
@@ -2783,10 +2515,7 @@
             "description": "角色名称"
           },
           "description": {
-            "type": [
-              "string",
-              "null"
-            ],
+            "type": ["string", "null"],
             "title": "描述",
             "description": "角色描述信息，可为空"
           }
@@ -2815,10 +2544,7 @@
             "description": "角色分类名称"
           },
           "pId": {
-            "type": [
-              "integer",
-              "null"
-            ],
+            "type": ["integer", "null"],
             "title": "父角色分类 ID",
             "description": "父级角色分类 ID，顶级分类为 null"
           },
@@ -2828,21 +2554,12 @@
             "description": "分类唯一标识，格式为 \"{id}~0\""
           },
           "pUniqueKey": {
-            "type": [
-              "string",
-              "null"
-            ],
+            "type": ["string", "null"],
             "title": "父分类唯一标识",
             "description": "父级分类唯一标识，顶级分类为空字符串"
           }
         },
-        "required": [
-          "Id",
-          "name",
-          "pId",
-          "uniqueKey",
-          "pUniqueKey"
-        ],
+        "required": ["Id", "name", "pId", "uniqueKey", "pUniqueKey"],
         "description": "角色分类信息"
       },
       "RoleTreeNode": {
@@ -2859,10 +2576,7 @@
             "description": "节点唯一标识，格式为 \"{id}~{isRole}\""
           },
           "pUniqueKey": {
-            "type": [
-              "string",
-              "null"
-            ],
+            "type": ["string", "null"],
             "title": "父节点唯一标识",
             "description": "父节点唯一标识，顶级节点为空字符串"
           },
@@ -2879,17 +2593,11 @@
           "isRole": {
             "type": "integer",
             "title": "是否为角色",
-            "enum": [
-              0,
-              1
-            ],
+            "enum": [0, 1],
             "description": "节点类型：1 表示角色，0 表示角色分类（文件夹）"
           },
           "pId": {
-            "type": [
-              "integer",
-              "null"
-            ],
+            "type": ["integer", "null"],
             "title": "父节点 ID",
             "description": "父节点 ID，顶级节点为 null"
           },
@@ -2929,10 +2637,7 @@
             "description": "父组织节点 ID，顶级节点为 0"
           },
           "orgLevel": {
-            "type": [
-              "string",
-              "null"
-            ],
+            "type": ["string", "null"],
             "title": "组织级别名称",
             "description": "组织级别名称，如 \"公司\"、\"部门\"，可为空"
           },
@@ -2947,10 +2652,7 @@
             "description": "组织路径，以 \"/\" 分隔的层级名称"
           },
           "description": {
-            "type": [
-              "string",
-              "null"
-            ],
+            "type": ["string", "null"],
             "title": "描述",
             "description": "组织节点描述信息，可为空"
           }

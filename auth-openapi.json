@@ -17,9 +17,7 @@
         "summary": "获取访问令牌",
         "deprecated": false,
         "description": "通过客户端凭证模式（Client Credentials）、密码模式（Resource Owner Password Credentials）或刷新令牌（Refresh Token）获取访问令牌。仅密码模式且 scope 包含 offline_access 时支持刷新令牌。",
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -41,11 +39,7 @@
                   },
                   "grant_type": {
                     "type": "string",
-                    "enum": [
-                      "client_credentials",
-                      "password",
-                      "refresh_token"
-                    ],
+                    "enum": ["client_credentials", "password", "refresh_token"],
                     "description": "授权方式：client_credentials（客户端凭证）、password（密码模式）、refresh_token（刷新令牌）",
                     "example": "client_credentials",
                     "title": "授权方式"
@@ -75,11 +69,7 @@
                     "title": "密码"
                   }
                 },
-                "required": [
-                  "client_id",
-                  "client_secret",
-                  "grant_type"
-                ]
+                "required": ["client_id", "client_secret", "grant_type"]
               },
               "examples": {}
             }
