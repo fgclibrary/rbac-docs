@@ -27,13 +27,13 @@
                 "properties": {
                   "client_id": {
                     "description": "客户端标识符，在活字格服务器管理控制台中获取",
-                    "example": "5570af0b-dfad-4c09-9620-d013ebd5",
+                    "example": "",
                     "type": "string",
                     "title": "客户端标识符"
                   },
                   "client_secret": {
                     "description": "客户端密钥，在活字格服务器管理控制台中获取",
-                    "example": "a70769e0-da98-4153-908b-27704b42",
+                    "example": "",
                     "type": "string",
                     "title": "客户端密钥"
                   },
