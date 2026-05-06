@@ -1103,7 +1103,7 @@
                   "rolePTypeId": {
                     "type": "integer",
                     "title": "父分类Id",
-                    "description": "父级角色分类 ID，顶级分类传入 0 或对应根节点 ID"
+                    "description": "父级角色分类 ID，为空或 null 时表示顶级分类"
                   }
                 },
                 "required": ["roleTypeName", "rolePTypeId"],
@@ -1192,7 +1192,7 @@
                   "pTypeId": {
                     "type": ["integer", "null"],
                     "title": "父分类id",
-                    "description": "父级角色分类 ID，为 null 时表示顶级分类"
+                    "description": "父级角色分类 ID，为空或 null 时表示顶级分类"
                   }
                 },
                 "required": ["typeId", "typeName", "pTypeId"],
@@ -1498,7 +1498,16 @@
                 },
                 "example": {
                   "ErrCode": 0,
-                  "Message": "添加成功"
+                  "Message": "添加成功",
+                  "data": {
+                    "orgId": 1,
+                    "orgName": "测试组织节点",
+                    "orgPNodeId": null,
+                    "orgLevelId": null,
+                    "sort": 0,
+                    "orgPath": "测试组织节点",
+                    "description": ""
+                  }
                 }
               }
             },
@@ -1958,7 +1967,7 @@
                     "description": "组织节点名称",
                     "title": "组织名称"
                   },
-                  "orgPid": {
+                  "orgPNodeId": {
                     "type": ["integer", "null"],
                     "description": "父级组织节点 ID，顶级节点传入 null",
                     "title": "父组织节点 ID"
@@ -1968,7 +1977,7 @@
                     "description": "组织级别 ID，对应组织级别配置，可为 null",
                     "title": "组织级别 ID"
                   },
-                  "orgDescription": {
+                  "description": {
                     "type": ["string", "null"],
                     "description": "组织节点描述信息",
                     "title": "描述"
@@ -1976,17 +1985,17 @@
                 },
                 "required": [
                   "orgName",
-                  "orgPid",
+                  "orgPNodeId",
                   "orgLevelId",
-                  "orgDescription"
+                  "description"
                 ],
                 "additionalProperties": false
               },
               "example": {
                 "orgName": "测试组织节点",
-                "orgPid": null,
+                "orgPNodeId": null,
                 "orgLevelId": null,
-                "orgDescription": ""
+                "description": ""
               }
             }
           },
@@ -2009,13 +2018,26 @@
                       "type": "string",
                       "title": "返回信息",
                       "description": "返回信息描述"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrgDetail",
+                      "description": "新增后的组织信息"
                     }
                   },
-                  "required": ["ErrCode", "Message"]
+                  "required": ["ErrCode", "Message", "data"]
                 },
                 "example": {
                   "ErrCode": 0,
-                  "Message": "添加成功"
+                  "Message": "添加成功",
+                  "data": {
+                    "orgId": 1,
+                    "orgName": "测试组织节点",
+                    "orgPNodeId": null,
+                    "orgLevelId": null,
+                    "sort": 0,
+                    "orgPath": "测试组织节点",
+                    "description": ""
+                  }
                 }
               }
             },
@@ -2058,7 +2080,7 @@
                     "description": "组织级别 ID，对应组织级别配置，可为 null",
                     "title": "组织级别 ID"
                   },
-                  "orgDescription": {
+                  "description": {
                     "type": ["string", "null"],
                     "description": "组织节点描述信息",
                     "title": "描述"
@@ -2073,7 +2095,7 @@
                   "orgId",
                   "orgName",
                   "orgLevelId",
-                  "orgDescription",
+                  "description",
                   "orgPNodeId"
                 ],
                 "additionalProperties": false
@@ -2082,7 +2104,7 @@
                 "orgId": 26,
                 "orgName": "节点 26",
                 "orgLevelId": null,
-                "orgDescription": "",
+                "description": "",
                 "orgPNodeId": 25
               }
             }
@@ -2106,13 +2128,26 @@
                       "type": "string",
                       "title": "返回信息",
                       "description": "返回信息描述"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/OrgDetail",
+                      "description": "返回修改后的组织信息"
                     }
                   },
-                  "required": ["ErrCode", "Message"]
+                  "required": ["ErrCode", "Message", "data"]
                 },
                 "example": {
                   "ErrCode": 0,
-                  "Message": "修改成功"
+                  "Message": "修改成功",
+                  "data": {
+                    "orgId": 26,
+                    "orgName": "节点 26",
+                    "orgPNodeId": 25,
+                    "orgLevelId": null,
+                    "sort": 0,
+                    "orgPath": "节点 26",
+                    "description": ""
+                  }
                 }
               }
             },
@@ -2666,6 +2701,56 @@
           "orgPath",
           "description"
         ]
+      },
+      "OrgDetail": {
+        "type": "object",
+        "properties": {
+          "orgId": {
+            "type": "integer",
+            "title": "组织 ID",
+            "description": "组织节点 ID"
+          },
+          "orgName": {
+            "type": "string",
+            "title": "组织名称",
+            "description": "组织节点名称"
+          },
+          "orgPNodeId": {
+            "type": ["integer", "null"],
+            "title": "父组织节点 ID",
+            "description": "父级组织节点 ID，顶级节点为 null"
+          },
+          "orgLevelId": {
+            "type": ["integer", "null"],
+            "title": "组织级别 ID",
+            "description": "组织级别 ID，对应组织级别配置，可为 null"
+          },
+          "sort": {
+            "type": "integer",
+            "title": "排序",
+            "description": "排序序号，值越小越靠前"
+          },
+          "orgPath": {
+            "type": "string",
+            "title": "组织路径",
+            "description": "组织路径，以 \"/\" 分隔的层级名称"
+          },
+          "description": {
+            "type": ["string", "null"],
+            "title": "描述",
+            "description": "组织节点描述信息，可为空"
+          }
+        },
+        "required": [
+          "orgId",
+          "orgName",
+          "orgPNodeId",
+          "orgLevelId",
+          "sort",
+          "orgPath",
+          "description"
+        ],
+        "description": "组织信息"
       }
     },
     "responses": {},
