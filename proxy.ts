@@ -3,14 +3,12 @@ import { isMarkdownPreferred, rewritePath } from "fumadocs-core/negotiation";
 import { NextResponse } from "next/server";
 import { docsContentRoute, docsRoute } from "@/lib/shared";
 
-// 公开路由：首页、LLM 文本端点和 API 代理无需登录
-// API 代理已有 origin 验证，不需要 Clerk 二次保护
+// 公开路由：首页和 LLM 文本端点无需登录
 const isPublicRoute = createRouteMatcher([
   "/",
   "/llms.txt(.*)",
   "/llms-full.txt(.*)",
   "/llms.mdx(.*)",
-  "/api/proxy",
 ]);
 
 // Fumadocs 内容协商路径重写
@@ -51,7 +49,8 @@ export default clerkMiddleware(async (auth, request) => {
 
 export const config = {
   matcher: [
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    "/(api|trpc)(.*)",
+    // 排除 /api/proxy：Clerk 中间件会尝试解析 Authorization header 中的 JWT，
+    // 但 playground 发送的是后端 API token（非 Clerk JWT），缺少 sub claim 导致崩溃
+    "/((?!_next|api/proxy(?:$|\\?|/)|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
   ],
 };
