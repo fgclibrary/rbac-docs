@@ -3,12 +3,14 @@ import { isMarkdownPreferred, rewritePath } from "fumadocs-core/negotiation";
 import { NextResponse } from "next/server";
 import { docsContentRoute, docsRoute } from "@/lib/shared";
 
-// 公开路由：首页和 LLM 文本端点无需登录
+// 公开路由：首页、LLM 文本端点和 API 代理无需登录
+// API 代理已有 origin 验证，不需要 Clerk 二次保护
 const isPublicRoute = createRouteMatcher([
   "/",
   "/llms.txt(.*)",
   "/llms-full.txt(.*)",
   "/llms.mdx(.*)",
+  "/api/proxy",
 ]);
 
 // Fumadocs 内容协商路径重写
